@@ -844,6 +844,7 @@ async function openStudentList(term) {
   }
 }
 
+// FIX: average aggregate components instead of summing them
 function calcStudentTotal(markData, classNum) {
   const cfg = CONFIG[classNum];
   if (!cfg || !markData?.academics) return null;
@@ -851,9 +852,10 @@ function calcStudentTotal(markData, classNum) {
   let total = 0;
   cfg.subjects.filter(s => s.countInTotal).forEach(subj => {
     if (subj.isAggregate) {
-      subj.components.forEach(cKey => {
-        total += (acad[cKey]?.total ?? 0);
-      });
+      const n = subj.components.length;
+      let sum = 0;
+      subj.components.forEach(cKey => { sum += (acad[cKey]?.total ?? 0); });
+      total += (subj.aggregateMethod === 'average' && n > 0) ? Math.round(sum / n) : sum;
     } else {
       total += (acad[subj.key]?.total ?? 0);
     }
@@ -1209,11 +1211,14 @@ async function saveCTData() {
     coScholastic[key][term] = sel.value;
   });
 
-  const attendance = {
-    hyPresent: parseInt($('sfHyPresent').value) || 0,
-    hyTotal:   parseInt($('sfHyTotal').value)   || 0,
-    ftPresent: parseInt($('sfFtPresent').value)  || 0,
-    ftTotal:   parseInt($('sfFtTotal').value)    || 0
+  // FIX: store per-term attendance {present, total} in each term's doc
+  const hyAttendance = {
+    present: parseInt($('sfHyPresent').value) || 0,
+    total:   parseInt($('sfHyTotal').value)   || 0
+  };
+  const ftAttendance = {
+    present: parseInt($('sfFtPresent').value) || 0,
+    total:   parseInt($('sfFtTotal').value)   || 0
   };
 
   const remarks = {
@@ -1228,13 +1233,17 @@ async function saveCTData() {
     totalStudents: parseInt($('sfTotalStudents').value) || null
   };
 
-  // Write same data to both HY and FT docs so it's always accessible
+  const termPayloads = {
+    HY: { coScholastic, attendance: hyAttendance, remarks, rank },
+    FT: { coScholastic, attendance: ftAttendance, remarks, rank }
+  };
+
   const batch = db.batch();
   for (const t of ['HY','FT']) {
     const ref = db.collection('marks').doc(`${classId}_${t}`)
                   .collection('students').doc(studentId);
     batch.set(ref, {
-      coScholastic, attendance, remarks, rank,
+      ...termPayloads[t],
       lastUpdatedBy: ME.user.uid,
       lastUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
     }, { merge: true });
@@ -1310,4 +1319,14 @@ async function lockAllRecords() {
 $('btnBackToStudentList').addEventListener('click', async () => {
   ME.activeStudent = null;
   await openStudentList(ME.activeClass.term);
+});
+
+// ─── PREVIEW REPORT CARD ─────────────────────────────────────────────────────
+$('btnPreviewRC').addEventListener('click', () => {
+  if (!ME.activeStudent) return;
+  const { studentId, classId } = ME.activeStudent;
+  window.open(
+    `reportcard.html?studentId=${encodeURIComponent(studentId)}&classId=${encodeURIComponent(classId)}`,
+    '_blank'
+  );
 });
