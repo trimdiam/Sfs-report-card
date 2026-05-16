@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SFS Connect — Mark Entry</title>
+  <link rel="stylesheet" href="css/markentry.css">
+</head>
+<body class="me-body">
+
+  <!-- ═══════════════════════════════════════════
+       HEADER (always visible)
+  ════════════════════════════════════════════ -->
+  <header class="me-header">
+    <img src="assets/logo.png" alt="SFS Logo" class="me-header-logo">
+    <div class="me-header-text">
+      <h1>SFS Connect</h1>
+      <p>St. Francis De Sales School, Laitkor &nbsp;|&nbsp; Mark Entry System</p>
+    </div>
+    <div class="me-header-actions">
+      <span id="saveIndicator"></span>
+      <span id="headerTeacherName" style="font-size:0.82rem;color:var(--me-gold);"></span>
+      <button class="btn btn-sm btn-warn" id="btnLogout" style="display:none;">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 1 — LOGIN
+  ════════════════════════════════════════════ -->
+  <div class="me-screen active" id="screenLogin">
+    <div class="me-login-wrap">
+      <div class="me-login-card">
+        <h2>Teacher Sign In</h2>
+        <p>SFS Connect · Academic Year 2026–2027</p>
+
+        <form id="loginForm" novalidate>
+          <div class="me-field">
+            <label for="loginEmail">Teacher ID</label>
+            <input type="text" id="loginEmail" placeholder="e.g. SFST003" autocomplete="username" required style="text-transform:uppercase;">
+          </div>
+          <div class="me-field">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
+          </div>
+          <div class="me-login-error" id="loginError"></div>
+          <button type="submit" class="btn btn-gold btn-full" id="btnLogin">Sign In as Teacher</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 2 — TEACHER DASHBOARD
+  ════════════════════════════════════════════ -->
+  <div class="me-screen" id="screenDashboard">
+    <div class="me-page">
+
+      <div class="me-dashboard-header">
+        <div>
+          <h2>Teacher Dashboard &nbsp;<span id="teacherName"></span></h2>
+          <p style="font-size:0.82rem;color:var(--me-muted);">Your subject assignments for the current session</p>
+        </div>
+        <button class="btn btn-warn btn-sm" id="btnLogout2">Sign Out</button>
+      </div>
+
+      <div class="me-card">
+        <div class="me-strip">&#9658; Subject Assignments</div>
+        <div style="overflow-x:auto;">
+          <table class="me-table">
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Subject</th>
+                <th>Half Yearly (HY)</th>
+                <th>Final Term (FT)</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardBody">
+              <tr>
+                <td colspan="5" class="me-loading">
+                  <div class="me-spinner"></div><br>Loading…
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 3 — CLASS GRID (Mark Entry)
+  ════════════════════════════════════════════ -->
+  <div class="me-screen" id="screenGrid">
+    <div class="me-page">
+
+      <div class="me-grid-header">
+        <button class="btn btn-secondary btn-sm" id="btnBackToDashboard">&#8592; Back</button>
+        <div class="me-grid-title">
+          <h2 id="gridTitle">Class — Subject — Term</h2>
+          <p id="gridSubtitle"></p>
+        </div>
+      </div>
+
+      <div class="me-card">
+        <div class="me-strip">&#9658; Mark Entry Grid</div>
+        <div class="me-grid-table-wrap" id="gridTableWrap">
+          <div class="me-loading"><div class="me-spinner"></div><br>Loading…</div>
+        </div>
+        <div class="me-grid-actions">
+          <button class="btn btn-secondary" id="btnSaveDraft">Save Draft</button>
+          <button class="btn btn-gold" id="btnSubmit">Submit to Class Teacher</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 4 — CLASS TEACHER DASHBOARD
+  ════════════════════════════════════════════ -->
+  <div class="me-screen" id="screenCTDashboard">
+    <div class="me-page">
+
+      <div class="me-dashboard-header">
+        <div>
+          <h2 id="ctDashTitle">Class Teacher Dashboard</h2>
+          <p style="font-size:0.82rem;color:var(--me-muted);" id="ctDashTeacher"></p>
+        </div>
+        <div style="display:flex;gap:0.625rem;">
+          <button class="btn btn-secondary btn-sm" id="ctBtnRefresh">&#8635; Refresh</button>
+          <button class="btn btn-warn btn-sm" id="ctBtnLogout">Sign Out</button>
+        </div>
+      </div>
+
+      <!-- HY Panel -->
+      <div class="me-card" style="margin-bottom:1rem;">
+        <div class="me-strip">&#9658; Half Yearly (HY) — Subject Status</div>
+        <div style="overflow-x:auto;">
+          <table class="me-table">
+            <thead><tr><th>Subject</th><th>Entered By</th><th>Status</th></tr></thead>
+            <tbody id="ctHyStatusBody">
+              <tr><td colspan="3" class="me-loading"><div class="me-spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-top:1px solid var(--me-border);">
+          <span class="me-progress-text" id="ctHyProgress">Loading…</span>
+          <button class="btn btn-primary btn-sm" id="ctBtnReviewHY" disabled>Review &amp; Lock HY &#8594;</button>
+        </div>
+      </div>
+
+      <!-- FT Panel -->
+      <div class="me-card">
+        <div class="me-strip">&#9658; Final Term (FT) — Subject Status</div>
+        <div style="overflow-x:auto;">
+          <table class="me-table">
+            <thead><tr><th>Subject</th><th>Entered By</th><th>Status</th></tr></thead>
+            <tbody id="ctFtStatusBody">
+              <tr><td colspan="3" class="me-loading"><div class="me-spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-top:1px solid var(--me-border);">
+          <span class="me-progress-text" id="ctFtProgress">Loading…</span>
+          <button class="btn btn-primary btn-sm" id="ctBtnReviewFT" disabled>Review &amp; Lock FT &#8594;</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 5 — STUDENT REVIEW LIST
+  ════════════════════════════════════════════ -->
+  <div class="me-screen" id="screenStudentList">
+    <div class="me-page">
+
+      <div class="me-grid-header">
+        <button class="btn btn-secondary btn-sm" id="btnBackToCTDash">&#8592; Back</button>
+        <div class="me-grid-title">
+          <h2 id="slTitle">Student Records</h2>
+          <p id="slSubtitle"></p>
+        </div>
+        <button class="btn btn-warn btn-sm" id="btnLockAll">&#128274; Lock All Records</button>
+      </div>
+
+      <div class="me-card">
+        <div class="me-strip">&#9658; Student List</div>
+        <div style="overflow-x:auto;">
+          <table class="me-table">
+            <thead>
+              <tr>
+                <th>#</th><th>Student Name</th><th>HY Total</th><th>HY%</th>
+                <th>FT Total</th><th>FT%</th><th>Rank</th><th>Status</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="slTableBody">
+              <tr><td colspan="9" class="me-loading"><div class="me-spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 6 — INDIVIDUAL STUDENT FORM
+  ════════════════════════════════════════════ -->
+  <div class="me-screen" id="screenStudentForm">
+    <div class="me-page">
+
+      <div class="me-grid-header">
+        <button class="btn btn-secondary btn-sm" id="btnBackToStudentList">&#8592; Back to List</button>
+        <div class="me-grid-title">
+          <h2 id="sfStudentName">Student Name</h2>
+          <p><span id="sfClass"></span> &nbsp;|&nbsp; <span id="sfTerm"></span> &nbsp;|&nbsp; Roll No: <span id="sfRollNo"></span></p>
+        </div>
+        <div id="sfLockStatus" style="display:none;" class="status-badge status-locked">&#128274; Record Locked</div>
+      </div>
+
+      <!-- Section A: Academic Summary (READ ONLY) -->
+      <div class="me-card">
+        <div class="me-strip">&#9658; A &nbsp; Academic Summary <span style="font-weight:400;font-size:0.72rem;opacity:0.7;margin-left:0.5rem;">(Read Only — entered by subject teachers)</span></div>
+        <div style="overflow-x:auto;padding:0.75rem 1rem;" id="sfAcademicTable">
+          <div class="me-loading"><div class="me-spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Section B: Co-Scholastic -->
+      <div class="me-card">
+        <div class="me-strip">&#9658; B &nbsp; Co-Scholastic Activities</div>
+        <div class="ct-cosch-grid" id="sfCoScholastic"></div>
+      </div>
+
+      <!-- Section C: Attendance -->
+      <div class="me-card">
+        <div class="me-strip">&#9658; C &nbsp; Attendance</div>
+        <div class="ct-att-grid">
+          <div class="ct-att-block">
+            <span class="ct-att-label">Half Yearly</span>
+            <div class="ct-att-row">
+              <label>Days Present</label>
+              <input type="number" id="sfHyPresent" class="ct-att-input" min="0" placeholder="0">
+              <span class="ct-att-sep">/</span>
+              <label>Working Days</label>
+              <input type="number" id="sfHyTotal" class="ct-att-input" min="0" placeholder="0">
+            </div>
+          </div>
+          <div class="ct-att-block">
+            <span class="ct-att-label">Final Term</span>
+            <div class="ct-att-row">
+              <label>Days Present</label>
+              <input type="number" id="sfFtPresent" class="ct-att-input" min="0" placeholder="0">
+              <span class="ct-att-sep">/</span>
+              <label>Working Days</label>
+              <input type="number" id="sfFtTotal" class="ct-att-input" min="0" placeholder="0">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section D: Remarks -->
+      <div class="me-card">
+        <div class="me-strip">&#9658; D &nbsp; Remarks</div>
+        <div class="ct-remarks-grid">
+          <div class="ct-remark-item">
+            <label>Half Yearly Remark</label>
+            <textarea id="sfHyRemark" class="ct-remark-ta" rows="2" placeholder="Enter remark…"></textarea>
+          </div>
+          <div class="ct-remark-item">
+            <label>Final Term Remark</label>
+            <textarea id="sfFtRemark" class="ct-remark-ta" rows="2" placeholder="Enter remark…"></textarea>
+          </div>
+          <div class="ct-remark-item">
+            <label>Principal's Remark</label>
+            <textarea id="sfPrincipalRemark" class="ct-remark-ta" rows="2" placeholder="Enter remark…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section E: Rank -->
+      <div class="me-card">
+        <div class="me-strip">&#9658; E &nbsp; Rank <span style="font-weight:400;font-size:0.72rem;opacity:0.7;margin-left:0.5rem;">(Auto-calculated when you open the Student List)</span></div>
+        <div class="ct-rank-grid">
+          <div class="ct-rank-item">
+            <label>HY Rank</label>
+            <input type="number" id="sfHyRank" class="ct-rank-input" min="1" placeholder="—">
+          </div>
+          <div class="ct-rank-item">
+            <label>FT Rank</label>
+            <input type="number" id="sfFtRank" class="ct-rank-input" min="1" placeholder="—">
+          </div>
+          <div class="ct-rank-item">
+            <label>Total Students</label>
+            <input type="number" id="sfTotalStudents" class="ct-rank-input" min="1" placeholder="—">
+          </div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--me-muted);padding:0 1rem 0.75rem;">Ranks are automatically calculated from all students' grand totals each time you open the Student List. Fields are read-only once auto-computed — visit the Student List to recalculate.</p>
+      </div>
+
+      <!-- Section F: Result -->
+      <div class="me-card">
+        <div class="me-strip">&#9658; F &nbsp; Result (Auto-Calculated)</div>
+        <div style="padding:1rem;text-align:center;">
+          <span id="sfResultBadge" class="ct-result-badge ct-result-pass">PASS</span>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="me-grid-actions" style="justify-content:space-between;">
+        <button class="btn btn-secondary" id="btnSaveCT">Save Draft</button>
+        <button class="btn btn-warn" id="btnLockRecord">&#128274; Lock Record</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       LOCK CONFIRMATION MODAL
+  ════════════════════════════════════════════ -->
+  <div class="me-modal-backdrop hidden" id="lockModal">
+    <div class="me-modal">
+      <h3>&#128274; Confirm Lock</h3>
+      <p id="lockModalMsg"></p>
+      <div class="me-modal-actions">
+        <button class="btn btn-secondary" id="btnCancelLock">Cancel</button>
+        <button class="btn btn-warn" id="btnConfirmLock">Confirm Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SUBMIT CONFIRMATION MODAL
+  ════════════════════════════════════════════ -->
+  <div class="me-modal-backdrop hidden" id="submitModal">
+    <div class="me-modal">
+      <h3>Confirm Submission</h3>
+      <p id="submitModalMsg"></p>
+      <div class="me-modal-actions">
+        <button class="btn btn-secondary" id="btnCancelSubmit">Cancel</button>
+        <button class="btn btn-gold" id="btnConfirmSubmit">Confirm Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCRIPTS
+  ════════════════════════════════════════════ -->
+
+  <!-- Firebase compat SDK (v9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script src="js/firebase-init.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/markentry.js"></script>
+
+  <script>
+    // Wire up second logout button (dashboard screen)
+    document.getElementById('btnLogout2').addEventListener('click', () => auth.signOut());
+    // Show logout button in header only when logged in
+    auth.onAuthStateChanged(u => {
+      document.getElementById('btnLogout').style.display = u ? '' : 'none';
+    });
+  </script>
+
+</body>
+</html>

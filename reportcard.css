@@ -1,0 +1,935 @@
+/* ============================================================
+   SFDS Report Card — Production CSS
+   All 12 confirmed flaws fixed · All 8 polish items applied
+   Target: Legal Landscape (14in × 8.5in) · Single page print
+   ============================================================ */
+
+/* ── VARIABLES ─────────────────────────────────────────────── */
+:root {
+  /* Core palette — cow-dung earthy brown (shifted from green) */
+  --rc-dark:    #4E471A;
+  --rc-dark2:   #5C5424;
+  --rc-olive:   #7A7030;
+  --rc-gold:    #B8962E;
+  --rc-gold-lt: #D4B84A;
+  --rc-cream:   #FAF8F0;
+  --rc-cream2:  #F3EFE2;
+  --rc-cream3:  #EBE6D5;
+  --rc-text:    #1A1A1A;
+  --rc-muted:   #3A3A3A; /* POLISH 4 — darkened from #5A5A5A */
+  --rc-border:  #C8C0A8;
+  --rc-border2: #D8D0B8;
+  --rc-fail:    #C62828;
+
+  /* Page dimensions — Legal landscape */
+  --rc-page-w: 355.6mm; /* 14in */
+  --rc-page-h: 215.9mm; /* 8.5in */
+  --rc-card-w: 343mm;
+}
+
+/* ── RESET & BASE ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 9px;
+  color: var(--rc-text);
+  line-height: 1.35;
+  background: #C8C4BC;
+}
+
+/* ── FLAW 9 FIX — screen body scroll ──────────────────────── */
+@media screen {
+  body {
+    padding: 14px;
+    background: #C8C4BC;
+    overflow-x: auto;
+    min-width: fit-content;
+  }
+}
+
+/* ── REPORT CARD CONTAINER ─────────────────────────────────── */
+.report-card {
+  width: var(--rc-card-w);
+  min-height: var(--rc-page-h);
+  max-height: var(--rc-page-h);
+  margin: 0 auto;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0) 100%),
+    var(--rc-cream);
+  border: 3px solid #0C0C0C;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* Watermark — school logo */
+.report-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: url('assets/logo.jpg') center / contain no-repeat;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HEADER
+   ══════════════════════════════════════════════════════════════ */
+.rc-header {
+  background: var(--rc-dark);
+  /* POLISH 1 — thicker gold separator */
+  border-bottom: 4px solid var(--rc-gold);
+  padding: 0 16px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.rc-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0 5px;
+}
+
+/* FLAW 11 FIX — logo sizing + fallback stability */
+.rc-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex-shrink: 0;
+  min-width: 56px;
+  border-radius: 50%;
+  background: var(--rc-cream);
+  padding: 1.5px;
+  border: 1px solid var(--rc-gold);
+}
+
+/* Fallback placeholder inserted by render.js onerror */
+.rc-header-inner > div[style*="border-radius:50%"] {
+  flex-shrink: 0;
+  min-width: 40px;
+}
+
+.rc-header-text {
+  flex: 1;
+  text-align: center;
+}
+
+.rc-header-text h1 {
+  font-size: 19px;
+  font-weight: 800;
+  color: #E8E0C4;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.rc-header-text .rc-address {
+  font-size: 9.5px;
+  color: #C8C0A8;
+  margin-top: 1px;
+}
+
+.rc-header-text .rc-meta {
+  font-size: 9px;
+  color: #A8A088;
+  margin-top: 2px;
+}
+
+.rc-header-text .rc-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--rc-gold-lt);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.rc-class-badge {
+  background: var(--rc-dark2);
+  border: 1.5px solid var(--rc-gold);
+  border-radius: 4px;
+  padding: 5px 12px;
+  text-align: center;
+  color: var(--rc-cream);
+  font-size: 8px;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.rc-class-badge > div:first-child {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   3-COLUMN BODY GRID
+   ══════════════════════════════════════════════════════════════ */
+.rc-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 72mm 1fr 1fr;
+  min-height: 0;
+}
+
+/* Column shared styles */
+.rc-left,
+.rc-center,
+.rc-right {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rc-left {
+  border-right: 2px solid #0C0C0C;
+}
+
+.rc-center {
+  border-right: 2px solid #0C0C0C;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION STRIPS
+   ══════════════════════════════════════════════════════════════ */
+.rc-strip {
+  background: var(--rc-dark);
+  color: var(--rc-cream);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 1.2mm 10px;
+  border-bottom: 1px solid #0C0C0C;
+  border-top: 1px solid var(--rc-dark);
+  flex-shrink: 0;
+}
+
+/* POLISH 2 — make thin strips match regular strip height */
+.rc-strip-thin {
+  padding: 1.2mm 10px;
+}
+
+/* POLISH 8 — remove top border on first strip in each column */
+.rc-center > .rc-strip:first-child,
+.rc-right  > .rc-strip:first-child,
+.rc-left   > .rc-strip:first-child {
+  border-top: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LEFT COLUMN — PROFILE
+   ══════════════════════════════════════════════════════════════ */
+.rc-profile-block {
+  padding: 6px 8px 5px;
+  border-bottom: 1px solid var(--rc-border);
+  text-align: center;
+}
+
+.rc-photo-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.rc-photo-placeholder {
+  width: 48px;
+  height: 58px;
+  border: 1.5px solid #0C0C0C;
+  background: var(--rc-cream2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7.5px;
+  color: #888;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.rc-profile-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--rc-dark);
+  margin: 3px 0 4px;
+  line-height: 1.2;
+}
+
+.rc-profile-chips {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.rc-chip {
+  font-size: 9.5px;
+  font-weight: 700;
+  background: var(--rc-cream2);
+  border: 1px solid var(--rc-border);
+  border-radius: 2px;
+  padding: 1px 5px;
+  color: var(--rc-olive);
+}
+
+/* Info fields */
+.rc-info-fields-block {
+  border-bottom: 1px solid var(--rc-border);
+}
+
+.rc-field {
+  display: flex;
+  border-bottom: 1px solid var(--rc-border2);
+  font-size: 9px;
+}
+
+.rc-field:last-child {
+  border-bottom: none;
+}
+
+/* POLISH 7 FIX — label lighter than value */
+.rc-flabel {
+  width: 50%;
+  padding: 2.5px 7px;
+  font-weight: 500;
+  color: var(--rc-olive);
+  border-right: 1px solid var(--rc-border2);
+}
+
+.rc-fval {
+  width: 50%;
+  padding: 2.5px 7px;
+  font-weight: 700;
+  color: var(--rc-text);
+}
+
+/* ── ATTENDANCE ────────────────────────────────────────────── */
+.rc-attendance {
+  padding: 4px 7px 5px;
+  border-bottom: 1px solid var(--rc-border);
+}
+
+.rc-att-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5px;
+}
+
+.rc-att-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--rc-olive);
+}
+
+.rc-att-pct {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--rc-dark);
+}
+
+.rc-att-pct.att-good     { color: #1B6B2F; }
+.rc-att-pct.att-moderate { color: #B8962E; }
+.rc-att-pct.att-poor     { color: var(--rc-fail); }
+
+.rc-att-bar {
+  margin-bottom: 4px;
+}
+
+.rc-att-track {
+  height: 5px;
+  background: var(--rc-cream3);
+  border: 1px solid var(--rc-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.rc-att-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.rc-att-fill.att-good     { background: #2E7D32; }
+.rc-att-fill.att-moderate { background: #C9A84C; }
+.rc-att-fill.att-poor     { background: var(--rc-fail); }
+
+/* ── CO-SCHOLASTIC ─────────────────────────────────────────── */
+.rc-coscholastic {
+  border-bottom: 1px solid var(--rc-border);
+  flex-shrink: 0;
+}
+
+.rc-coschol-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 2.5px 7px;
+  border-bottom: 1px solid var(--rc-border2);
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--rc-olive);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* FLAW 8 FIX — empty span takes all available space */
+.rc-coschol-header > span:first-child {
+  flex: 1;
+}
+
+.rc-coschol-hdr-terms {
+  display: flex;
+  gap: 8px;
+}
+
+.rc-coschol-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5px 7px;
+  border-bottom: 1px solid var(--rc-border2);
+  font-size: 9px;
+}
+
+.rc-coschol-item:nth-child(odd) {
+  background: var(--rc-cream2);
+}
+
+.rc-coschol-label {
+  color: var(--rc-olive);
+  font-weight: 600;
+  flex: 1;
+}
+
+.rc-coschol-terms {
+  display: flex;
+  gap: 6px;
+}
+
+.rc-coschol-grade {
+  display: inline-block;
+  font-size: 8.5px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: #D5F5E3;
+  color: #145A32;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ── SEAL ──────────────────────────────────────────────────── */
+.rc-seal-box {
+  width: 24mm;
+  height: 24mm;
+  margin: 3mm auto;
+  border: 2px dashed var(--rc-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--rc-cream);
+  /* FLAW 2 FIX — centre in flex column */
+  align-self: center;
+  flex-shrink: 0;
+}
+
+/* FLAW 7 FIX — two-line "OFFICIAL SEAL" text */
+.rc-seal-box::after {
+  content: "OFFICIAL\A SEAL";
+  white-space: pre;
+  text-align: center;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--rc-border);
+  text-transform: uppercase;
+}
+
+/* ── LEFT COLUMN BOTTOM ────────────────────────────────────── */
+.rc-left-bottom {
+  margin-top: auto;
+  padding: 5px 7px;
+  border-top: 1px solid var(--rc-border);
+}
+
+.rc-date-issue {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--rc-dark);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MARKS TABLE
+   ══════════════════════════════════════════════════════════════ */
+.rc-marks-table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 10.5px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* FLAW 5 FIX — subject name column gets fixed width for alignment */
+.rc-marks-table th:first-child,
+.rc-marks-table td:first-child {
+  width: 190px;
+  max-width: 190px;
+}
+
+.rc-marks-table th {
+  background: var(--rc-olive);
+  color: var(--rc-cream);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 4.5px 3px;
+  text-align: center;
+  border: 1px solid var(--rc-dark);
+  line-height: 1.3;
+  white-space: nowrap;
+  height: 22px;
+}
+
+.rc-marks-table th:first-child {
+  text-align: left;
+  padding-left: 7px;
+}
+
+.rc-marks-table td {
+  padding: 4px 5px;
+  text-align: center;
+  border: 1px solid var(--rc-border);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.rc-marks-table td:first-child {
+  text-align: left;
+  padding-left: 8px;
+  font-weight: 700;
+  font-size: 10px;
+  color: var(--rc-dark);
+  border-right: 1px solid var(--rc-border);
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Zebra striping */
+.rc-marks-table tbody tr:nth-child(odd) td {
+  background: var(--rc-cream);
+}
+
+.rc-marks-table tbody tr:nth-child(even) td {
+  background: var(--rc-cream2);
+}
+
+/* Row types */
+.rc-row-aggregate td {
+  background: #EDE8D4 !important;
+  font-weight: 700;
+  color: var(--rc-dark);
+  border-top: 1.5px solid var(--rc-border);
+  border-bottom: 1.5px solid var(--rc-border);
+}
+
+.rc-row-component td:first-child {
+  padding-left: 14px;
+  font-weight: 500;
+  color: var(--rc-olive);
+  font-size: 9.5px;
+}
+
+.rc-row-single td {
+  font-weight: 600;
+}
+
+/* Fail cell */
+.rc-cell-fail {
+  color: var(--rc-fail) !important;
+  font-weight: 800 !important;
+}
+
+/* Total & consol cells */
+.rc-cell-total {
+  font-weight: 700;
+  border-left: 1px solid var(--rc-border);
+}
+
+.rc-cell-consol {
+  font-weight: 700;
+  border-left: 1px solid var(--rc-border);
+  font-size: 8px;
+}
+
+.rc-cell-grade {
+  text-align: center;
+}
+
+/* Grade pill */
+.rc-grade-pill {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1.5px 6px;
+  border-radius: 3px;
+  background: #D5F5E3;
+  color: #145A32;
+  letter-spacing: 0.3px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.rc-grade-pill.fail {
+  background: #FADBD8;
+  color: #7B241C;
+}
+
+/* Table footer */
+.rc-term-total td {
+  background: var(--rc-dark) !important;
+  color: var(--rc-cream);
+  font-weight: 700;
+  font-size: 8.5px;
+  padding: 3px 5px;
+  border: none !important;
+  border-top: 1px solid #0C0C0C !important;
+  border-bottom: 1px solid #0C0C0C !important;
+}
+
+.rc-term-total td:first-child {
+  border-left: 1px solid #0C0C0C !important;
+}
+
+.rc-term-total td:last-child {
+  border-right: 1px solid #0C0C0C !important;
+}
+
+.rc-tt-label {
+  text-align: left !important;
+  padding-left: 7px !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 7.5px !important;
+}
+
+.rc-tt-max {
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  color: var(--rc-cream) !important;
+  text-align: center;
+}
+
+.rc-tt-val {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  text-align: center;
+}
+
+.rc-tt-consol {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  text-align: center;
+}
+
+.rc-tt-grade {
+  text-align: center;
+}
+
+.rc-tt-grade .rc-grade-pill {
+  background: rgba(255,255,255,0.15);
+  color: var(--rc-cream);
+}
+
+.rc-rank-row {
+  display: none;
+}
+
+.rc-rank-row td {
+  background: var(--rc-cream2) !important;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--rc-dark);
+  text-align: center;
+  padding: 2.5px 5px;
+  border: 1px solid var(--rc-border);
+}
+
+.rc-rank-cell {
+  letter-spacing: 0.5px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TERM SUMMARY GRIDS
+   ══════════════════════════════════════════════════════════════ */
+.rc-term-summary-grid,
+.rc-summary-grid {
+  display: grid;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.rc-term-summary-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.rc-summary-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.rc-sum-box {
+  text-align: center;
+  padding: 3px 3px 4px;
+  border-right: 1px solid var(--rc-border2);
+  border-bottom: 1px solid var(--rc-border2);
+  background: var(--rc-cream);
+}
+
+.rc-sum-box:last-child {
+  border-right: none;
+}
+
+/* FLAW 10 FIX — visual separator between T1 and T2 summaries */
+.rc-center .rc-term-summary-grid .rc-sum-box {
+  background: #F0EDE0;
+}
+
+.rc-right .rc-term-summary-grid .rc-sum-box {
+  background: #EAF0E8;
+}
+
+.rc-slabel {
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--rc-olive);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.rc-sval {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--rc-text);
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.rc-snote {
+  font-size: 8px;
+  color: #5A5340;
+  margin-top: -1px;
+  font-weight: 600;
+}
+
+/* FLAW 6 FIX — removed dead CSS colour rules for #rcSumResult.
+   JS sets inline colour; only structural rules kept here. */
+#rcSumResult {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  word-break: break-word;
+  line-height: 1.15;
+  display: block;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REMARKS
+   ══════════════════════════════════════════════════════════════ */
+/* FLAW 1 FIX — removed -webkit-box / -webkit-line-clamp.
+   Fixed height + overflow: hidden for reliable clamping.
+   FLAW 12 FIX (Part A) — equal fixed height for both columns. */
+.rc-remark-text {
+  flex: 0 0 auto;
+  height: 18mm;
+  max-height: 18mm;
+  overflow: hidden;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--rc-dark);
+  line-height: 1.45;
+  background: var(--rc-cream2);
+  border-bottom: 1px solid var(--rc-border);
+}
+
+/* FLAW 12 FIX (Part B) — spacer absorbs leftover center-column space */
+.rc-remark-spacer {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: var(--rc-cream);
+  border-left: 3px solid var(--rc-gold);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SIGNATURES
+   ══════════════════════════════════════════════════════════════ */
+.rc-col-signatures {
+  display: flex;
+  justify-content: space-around;
+  padding: 3px 6px 5px;
+  border-top: 1px solid var(--rc-border);
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.rc-sig-block {
+  text-align: center;
+  min-width: 50px;
+}
+
+/* POLISH 3 — label above the signing line */
+.rc-sig-label-above {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--rc-olive);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.rc-sig-line {
+  width: 72px;
+  border-top: 1.5px solid #0C0C0C;
+  margin: 16px auto 3px;
+}
+
+.rc-sig-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--rc-dark);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════════════════════ */
+.rc-footer {
+  border-top: 2px solid #0C0C0C;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+/* POLISH 4 FIX — grade scale darker for print legibility */
+.rc-grade-scale {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #5A5340;
+  text-align: center;
+  padding: 3px 10px 2px;
+  background: var(--rc-cream);
+  border-bottom: none;
+  letter-spacing: 0.3px;
+}
+
+/* POLISH 6 FIX — true optical centering of bottom strip */
+.rc-bottom-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 14px;
+  background: var(--rc-dark);
+  color: #E0D8C0;
+  font-size: 8px;
+  position: relative;
+}
+
+.rc-bottom-strip > span:first-child,
+.rc-bottom-strip > .rc-right-text {
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.rc-center-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 8px;
+  color: #D0C8A8;
+  white-space: nowrap;
+}
+
+.rc-right-text {
+  text-align: right;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRINT RULES
+   ══════════════════════════════════════════════════════════════ */
+@media print {
+  /* FLAW 4 FIX — comprehensive vendor-prefixed color-adjust */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    size: legal landscape;
+    margin: 0;
+  }
+
+  html, body {
+    padding: 0;
+    background: #fff;
+    margin: 0;
+    width: var(--rc-page-w);
+    height: var(--rc-page-h);
+    overflow: hidden;
+  }
+
+  .report-card {
+    box-shadow: none;
+    border: 3px solid #0C0C0C;
+    width: var(--rc-page-w);
+    height: var(--rc-page-h);
+    min-height: var(--rc-page-h);
+    max-height: var(--rc-page-h);
+    margin: 0;
+    overflow: hidden;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Ensure all content stays within one page */
+  .rc-body {
+    overflow: hidden;
+  }
+
+  .rc-left, .rc-center, .rc-right {
+    overflow: hidden;
+  }
+
+  /* POLISH 5 FIX — watermark opacity reduced for print */
+  .report-card::after {
+    opacity: 0.02;
+  }
+
+  /* Hide screen-only elements */
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NOTE: FLAW 3 — DEAD CSS REMOVED
+   The following classes were deleted (no matching HTML elements):
+     .rc-result-box, .rc-result-line, .rc-result-badge,
+     .rc-result-grid, .rc-rstat, .rc-rlabel, .rc-rval
+   ══════════════════════════════════════════════════════════════ */

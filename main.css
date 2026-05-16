@@ -1,0 +1,579 @@
+/**
+ * main.css — SFDS Report Card System
+ * Form UI styles for index.html
+ * Cream / Gold / Dark design system
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --primary-dark:   #2C2C2C;
+  --primary-gold:   #C9A84C;
+  --bg-cream:       #FAF8F3;
+  --bg-white:       #FFFFFF;
+  --bg-section:     #F5F2EA;
+  --text-dark:      #1A1A1A;
+  --text-muted:     #666666;
+  --text-gold:      #A0822A;
+  --border-light:   #E0D9C8;
+  --pass-green:     #2E7D32;
+  --fail-red:       #C62828;
+  --grade-bg:       #3A3A2A;
+
+  --font-primary:   'Segoe UI', Arial, sans-serif;
+  --font-header:    Georgia, serif;
+  --radius:         0.25rem;
+  --transition:     0.2s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-cream);
+  color: var(--text-dark);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   APP LAYOUT
+   ═══════════════════════════════════════════════════════════════════════════ */
+.app-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════════════════════ */
+.app-header {
+  background: var(--primary-dark);
+  border-bottom: 3px solid var(--primary-gold);
+  margin: 0 -1rem 1.5rem;
+  padding: 1rem 1.5rem;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 2px solid var(--primary-gold);
+  flex-shrink: 0;
+}
+
+.header-text h1 {
+  font-family: var(--font-header);
+  font-size: 1.5rem;
+  color: var(--primary-gold);
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.header-sub {
+  font-size: 0.875rem;
+  color: var(--bg-cream);
+  margin-top: 0.125rem;
+}
+
+.header-meta {
+  font-size: 0.75rem;
+  color: var(--border-light);
+  margin-top: 0.25rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE TITLE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-gold);
+  text-align: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-light);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM SECTIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+.form-section {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+}
+
+.section-strip {
+  background: var(--primary-dark);
+  color: var(--primary-gold);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.strip-marker {
+  color: var(--primary-gold);
+  font-size: 0.75rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM GRID & FIELDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+.form-grid {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.form-grid.two-col   { grid-template-columns: repeat(2, 1fr); }
+.form-grid.three-col { grid-template-columns: repeat(3, 1fr); }
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.field-group .req {
+  color: var(--fail-red);
+  margin-left: 2px;
+}
+
+.field-group input,
+.field-group select,
+.field-group textarea {
+  font-family: var(--font-primary);
+  font-size: 0.9375rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  background: var(--bg-white);
+  color: var(--text-dark);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.15);
+}
+
+.field-group input[readonly] {
+  background: var(--bg-section);
+  cursor: default;
+}
+
+.field-group input[type="number"] {
+  -moz-appearance: textfield;
+}
+.field-group input[type="number"]::-webkit-outer-spin-button,
+.field-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.field-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 0 1rem 1rem;
+  font-style: italic;
+}
+
+.note-box {
+  font-size: 0.8rem;
+  color: var(--text-gold);
+  padding: 0.5rem 1rem;
+  background: var(--bg-section);
+  border-left: 3px solid var(--primary-gold);
+  display: none;
+}
+.note-box.visible {
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MARKS TABLE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.marks-table-wrapper {
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+}
+
+.marks-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.marks-table thead tr {
+  background: var(--primary-dark);
+  color: var(--primary-gold);
+}
+
+.marks-table th {
+  padding: 0.5rem 0.375rem;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid var(--primary-gold);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.marks-table th:first-child {
+  text-align: left;
+  padding-left: 0.75rem;
+}
+
+.marks-table td {
+  padding: 0.375rem 0.375rem;
+  border: 1px solid var(--border-light);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.marks-table td:first-child {
+  text-align: left;
+  padding-left: 0.75rem;
+  font-weight: 500;
+}
+
+.marks-table tbody tr:nth-child(even) {
+  background: var(--bg-section);
+}
+
+/* Row types */
+.marks-table .row-component td {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+.marks-table .row-component td:first-child {
+  padding-left: 1.25rem;
+}
+
+.marks-table .row-aggregate td {
+  background: rgba(201, 168, 76, 0.08);
+  font-weight: 600;
+}
+
+.marks-table .row-single td {
+  font-weight: 500;
+}
+
+/* Inputs inside table */
+.marks-table input[type="number"] {
+  width: 100%;
+  min-width: 52px;
+  padding: 0.375rem 0.25rem;
+  font-size: 0.875rem;
+  text-align: center;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  background: var(--bg-white);
+  color: var(--text-dark);
+  transition: border-color var(--transition);
+}
+
+.marks-table input[type="number"]:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+}
+
+.marks-table input[type="number"].error {
+  border-color: var(--fail-red);
+  background: #FFF5F5;
+}
+
+.marks-table .cell-total {
+  font-weight: 600;
+  color: var(--text-gold);
+}
+
+.marks-table .cell-grade .grade-pill {
+  display: inline-block;
+  background: var(--grade-bg);
+  color: var(--primary-gold);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  min-width: 28px;
+  text-align: center;
+}
+
+/* Grand total row */
+.grand-total-row td {
+  background: var(--primary-dark) !important;
+  color: var(--primary-gold);
+  font-weight: 700;
+  border-color: var(--primary-gold);
+}
+
+.grand-total-row .label-cell {
+  text-align: right;
+  padding-right: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.grand-total-row .value-cell {
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Attendance row */
+.attendance-row {
+  padding: 0.75rem 1rem;
+  background: var(--bg-section);
+  border-top: 1px solid var(--border-light);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CO-SCHOLASTIC GRID
+   ═══════════════════════════════════════════════════════════════════════════ */
+.coscholastic-grid {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem 1.5rem;
+}
+
+.coscholastic-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.coscholastic-item label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.coscholastic-item select {
+  font-family: var(--font-primary);
+  font-size: 0.875rem;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  background: var(--bg-white);
+  color: var(--text-dark);
+  min-width: 100px;
+}
+
+.coscholastic-item select:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESULT DISPLAY
+   ═══════════════════════════════════════════════════════════════════════════ */
+.result-display {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.result-label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.result-badge {
+  display: inline-block;
+  padding: 0.375rem 1rem;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid transparent;
+}
+
+.result-pass {
+  color: var(--pass-green);
+  background: #E8F5E9;
+  border-color: var(--pass-green);
+}
+
+.result-fail {
+  color: var(--fail-red);
+  background: #FFEBEE;
+  border-color: var(--fail-red);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM ACTIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  justify-content: center;
+  padding: 1.25rem 0 0.5rem;
+}
+
+.btn {
+  font-family: var(--font-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.625rem 1.25rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--primary-dark);
+  color: var(--primary-gold);
+  border-color: var(--primary-gold);
+}
+.btn-primary:hover {
+  background: #1A1A1A;
+}
+
+.btn-secondary {
+  background: var(--bg-white);
+  color: var(--primary-dark);
+  border-color: var(--primary-gold);
+}
+.btn-secondary:hover {
+  background: var(--bg-section);
+}
+
+.btn-warn {
+  background: var(--bg-white);
+  color: var(--fail-red);
+  border-color: var(--fail-red);
+}
+.btn-warn:hover {
+  background: #FFEBEE;
+}
+
+.btn-accent {
+  background: var(--primary-gold);
+  color: var(--primary-dark);
+  border-color: var(--primary-gold);
+}
+.btn-accent:hover {
+  background: #B8973A;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════════════════ */
+.app-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 1rem;
+}
+
+.app-footer p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-note {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .form-grid.two-col,
+  .form-grid.three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .header-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRINT (hide UI chrome when printing the form itself)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  .app-header,
+  .app-footer,
+  .form-actions {
+    display: none !important;
+  }
+
+  .form-section {
+    border: 1px solid var(--border-light);
+    break-inside: avoid;
+  }
+}

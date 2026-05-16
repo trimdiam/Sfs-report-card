@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SFDS Report Card — Mark Entry</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- ═══════════════════════════════════════════════════════════════
+             HEADER
+             ═══════════════════════════════════════════════════════════════ -->
+        <header class="app-header">
+            <div class="header-inner">
+                <img src="assets/logo.png" alt="School Logo" class="header-logo" id="headerLogo">
+                <div class="header-text">
+                    <h1>St. Francis De Sales School</h1>
+                    <p class="header-sub">Laitkor, Shillong — Meghalaya</p>
+                    <p class="header-meta">Affiliated to CBSE &nbsp;|&nbsp; Ph: 9612946550 &nbsp;|&nbsp; sfslaitkor@gmail.com</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             MAIN FORM
+             ═══════════════════════════════════════════════════════════════ -->
+        <main class="form-main">
+            <h2 class="page-title">Mark Entry Form — Academic Year 2026–2027</h2>
+
+            <!-- ───────────────────────────────────────────────────────────
+                 SECTION A — CLASS & STUDENT INFO
+                 ─────────────────────────────────────────────────────────── -->
+            <section class="form-section" id="sectionA">
+                <div class="section-strip">
+                    <span class="strip-marker">▸</span>
+                    <span class="strip-label">Student & Class Information</span>
+                </div>
+
+                <div class="form-grid two-col">
+                    <div class="field-group">
+                        <label for="classSelect">Class <span class="req">*</span></label>
+                        <select id="classSelect" name="classSelect">
+                            <option value="" disabled selected>Select Class</option>
+                            <option value="3">III</option>
+                            <option value="4">IV</option>
+                            <option value="5">V</option>
+                            <option value="6">VI</option>
+                            <option value="7">VII</option>
+                            <option value="8">VIII</option>
+                            <option value="9">IX</option>
+                            <option value="10">X</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="sectionInput">Section</label>
+                        <input type="text" id="sectionInput" name="section" placeholder="e.g. A" maxlength="5">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="studentName">Student Name <span class="req">*</span></label>
+                        <input type="text" id="studentName" name="studentName" placeholder="Full name of student">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="rollNumber">Roll Number <span class="req">*</span></label>
+                        <input type="number" id="rollNumber" name="rollNumber" min="1" placeholder="e.g. 12">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="admissionNo">Admission Number</label>
+                        <input type="text" id="admissionNo" name="admissionNo" placeholder="Admission number">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="classTeacher">Class Teacher Name</label>
+                        <input type="text" id="classTeacher" name="classTeacher" placeholder="Class teacher name">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="house">House</label>
+                        <input type="text" id="house" name="house" placeholder="e.g. Francis House">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="session">Session</label>
+                        <input type="text" id="session" name="session" value="2026-2027" readonly>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ───────────────────────────────────────────────────────────
+                 SECTION B — HALF YEARLY MARKS TABLE
+                 ─────────────────────────────────────────────────────────── -->
+            <section class="form-section" id="sectionB">
+                <div class="section-strip">
+                    <span class="strip-marker">▸</span>
+                    <span class="strip-label">Half Yearly Marks</span>
+                </div>
+                <div class="note-box" id="halfYearlyNote"></div>
+                <div class="marks-table-wrapper">
+                    <table class="marks-table" id="halfYearlyTable">
+                        <thead>
+                            <tr id="halfYearlyHeaderRow">
+                                <!-- Dynamic columns injected by form.js -->
+                            </tr>
+                        </thead>
+                        <tbody id="halfYearlyBody">
+                            <!-- Dynamic rows injected by form.js -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="grand-total-row">
+                                <td colspan="2" class="label-cell">Grand Total</td>
+                                <td class="value-cell" id="hyGrandTotal">0</td>
+                                <td class="value-cell" id="hyPercentage">0%</td>
+                                <td class="value-cell" id="hyGrade">—</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="attendance-row form-grid two-col">
+                    <div class="field-group">
+                        <label>Attendance — Days Present</label>
+                        <input type="number" id="hyPresent" min="0" placeholder="Present">
+                    </div>
+                    <div class="field-group">
+                        <label>Attendance — Total Working Days</label>
+                        <input type="number" id="hyTotalDays" min="1" placeholder="Total">
+                    </div>
+                </div>
+            </section>
+
+            <!-- ───────────────────────────────────────────────────────────
+                 SECTION C — FINAL TERM MARKS TABLE
+                 ─────────────────────────────────────────────────────────── -->
+            <section class="form-section" id="sectionC">
+                <div class="section-strip">
+                    <span class="strip-marker">▸</span>
+                    <span class="strip-label">Final Term Marks</span>
+                </div>
+                <div class="note-box" id="finalTermNote"></div>
+                <div class="marks-table-wrapper">
+                    <table class="marks-table" id="finalTermTable">
+                        <thead>
+                            <tr id="finalTermHeaderRow">
+                                <!-- Dynamic columns injected by form.js -->
+                            </tr>
+                        </thead>
+                        <tbody id="finalTermBody">
+                            <!-- Dynamic rows injected by form.js -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="grand-total-row">
+                                <td colspan="2" class="label-cell">Grand Total</td>
+                                <td class="value-cell" id="ftGrandTotal">0</td>
+                                <td class="value-cell" id="ftPercentage">0%</td>
+                                <td class="value-cell" id="ftGrade">—</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="attendance-row form-grid two-col">
+                    <div class="field-group">
+                        <label>Attendance — Days Present</label>
+                        <input type="number" id="ftPresent" min="0" placeholder="Present">
+                    </div>
+                    <div class="field-group">
+                        <label>Attendance — Total Working Days</label>
+                        <input type="number" id="ftTotalDays" min="1" placeholder="Total">
+                    </div>
+                </div>
+            </section>
+
+            <!-- ───────────────────────────────────────────────────────────
+                 SECTION D — CO-SCHOLASTIC GRADES
+                 ─────────────────────────────────────────────────────────── -->
+            <section class="form-section" id="sectionD">
+                <div class="section-strip">
+                    <span class="strip-marker">▸</span>
+                    <span class="strip-label">Co-Scholastic Grades</span>
+                </div>
+                <div class="coscholastic-grid" id="coScholasticContainer">
+                    <!-- Dynamic rows injected by form.js -->
+                </div>
+            </section>
+
+            <!-- ───────────────────────────────────────────────────────────
+                 SECTION E — REMARKS
+                 ─────────────────────────────────────────────────────────── -->
+            <section class="form-section" id="sectionE">
+                <div class="section-strip">
+                    <span class="strip-marker">▸</span>
+                    <span class="strip-label">Remarks</span>
+                </div>
+                <div class="form-grid two-col">
+                    <div class="field-group">
+                        <label for="hyRemark">Half Yearly Remark</label>
+                        <textarea id="hyRemark" rows="3" placeholder="Class teacher observation for Half Yearly"></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="ftRemark">Final Term Remark</label>
+                        <textarea id="ftRemark" rows="3" placeholder="Class teacher observation for Final Term (include promotion status)"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ───────────────────────────────────────────────────────────
+                 SECTION F — RANK
+                 ─────────────────────────────────────────────────────────── -->
+            <section class="form-section" id="sectionF">
+                <div class="section-strip">
+                    <span class="strip-marker">▸</span>
+                    <span class="strip-label">Rank</span>
+                </div>
+                <div class="form-grid three-col">
+                    <div class="field-group">
+                        <label for="hyRank">Half Yearly Rank</label>
+                        <input type="number" id="hyRank" min="1" placeholder="Rank">
+                    </div>
+                    <div class="field-group">
+                        <label for="ftRank">Final Term Rank</label>
+                        <input type="number" id="ftRank" min="1" placeholder="Rank">
+                    </div>
+                    <div class="field-group">
+                        <label for="totalStudents">Total Students in Class</label>
+                        <input type="number" id="totalStudents" min="1" placeholder="Total students">
+                    </div>
+                </div>
+                <p class="field-note">Rank is eligible only if student passes all subjects (40+ in each). Dense ranking — no rank skipped for ties.</p>
+            </section>
+
+            <!-- ───────────────────────────────────────────────────────────
+                 SECTION G — RESULT
+                 ─────────────────────────────────────────────────────────── -->
+            <section class="form-section" id="sectionG">
+                <div class="section-strip">
+                    <span class="strip-marker">▸</span>
+                    <span class="strip-label">Result</span>
+                </div>
+                <div class="result-display" id="resultDisplay">
+                    <span class="result-label">Auto-determined Result:</span>
+                    <span class="result-badge" id="resultBadge">—</span>
+                </div>
+            </section>
+
+            <!-- ───────────────────────────────────────────────────────────
+                 FORM ACTIONS
+                 ─────────────────────────────────────────────────────────── -->
+            <section class="form-actions" id="formActions">
+                <button type="button" class="btn btn-primary" id="btnPreview">Preview Report Card</button>
+                <button type="button" class="btn btn-primary" id="btnPrint">Print Report Card</button>
+                <button type="button" class="btn btn-secondary" id="btnSaveJson">Save to JSON</button>
+                <button type="button" class="btn btn-secondary" id="btnLoadJson">Load from JSON</button>
+                <button type="button" class="btn btn-warn" id="btnClear">Clear Form</button>
+                <button type="button" class="btn btn-accent" id="btnAddToClass">Add to Class List</button>
+                <button type="button" class="btn btn-accent" id="btnViewMarksheet">View Class Marksheet</button>
+            </section>
+        </main>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             FOOTER
+             ═══════════════════════════════════════════════════════════════ -->
+        <footer class="app-footer">
+            <p>St. Francis De Sales School · Laitkor, Shillong, Meghalaya</p>
+            <p class="footer-note">Computer-generated document | Verify with school records</p>
+        </footer>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/form.js"></script>
+</body>
+</html>

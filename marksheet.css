@@ -1,0 +1,292 @@
+/**
+ * marksheet.css — SFDS Report Card System
+ * Class marksheet layout for A3 landscape print (420mm × 297mm)
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRINT PAGE SETUP
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  @page {
+    size: A3 landscape;
+    margin: 6mm;
+  }
+
+  body {
+    margin: 0;
+    background: white;
+    font-size: 0.65rem;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .marksheet-page {
+    page-break-after: always;
+    box-shadow: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ROOT VARIABLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --ms-dark:       #2C2C2C;
+  --ms-gold:       #C9A84C;
+  --ms-cream:      #FAF8F3;
+  --ms-white:      #FFFFFF;
+  --ms-section:    #F5F2EA;
+  --ms-text:       #1A1A1A;
+  --ms-muted:      #666666;
+  --ms-border:     #E0D9C8;
+  --ms-green:      #2E7D32;
+  --ms-red:        #C62828;
+  --ms-failbg:     #FFEBEE;
+
+  --ms-font:       'Segoe UI', Arial, sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+html {
+  font-size: 14px;
+}
+
+body {
+  font-family: var(--ms-font);
+  background: var(--ms-cream);
+  color: var(--ms-text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.3;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE WRAPPER
+   ═══════════════════════════════════════════════════════════════════════════ */
+.marksheet-page {
+  width: 408mm;       /* 420mm - 2×6mm margin */
+  min-height: 285mm;  /* 297mm - 2×6mm margin */
+  margin: 0 auto;
+  background: var(--ms-white);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ms-header {
+  background: var(--ms-dark);
+  border-bottom: 2px solid var(--ms-gold);
+  padding: 4mm 5mm;
+  flex-shrink: 0;
+}
+
+.ms-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+}
+
+.ms-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 1.5px solid var(--ms-gold);
+  flex-shrink: 0;
+}
+
+.ms-header-text {
+  flex: 1;
+}
+
+.ms-header-text h1 {
+  font-size: 0.95rem;
+  color: var(--ms-gold);
+  margin: 0;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+
+.ms-meta {
+  font-size: 0.6rem;
+  color: var(--ms-border);
+  margin: 1px 0 0;
+}
+
+.ms-header-info {
+  color: var(--ms-cream);
+  font-size: 0.6rem;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.ms-header-info strong {
+  color: var(--ms-gold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ms-table-wrap {
+  flex: 1;
+  overflow-x: auto;
+  padding: 3mm 4mm;
+}
+
+.ms-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+  table-layout: auto;
+}
+
+/* Header */
+.ms-table thead tr {
+  background: var(--ms-dark);
+  color: var(--ms-gold);
+}
+
+.ms-table th {
+  padding: 3px 4px;
+  font-weight: 700;
+  text-align: center;
+  border: 1px solid var(--ms-gold);
+  font-size: 0.6rem;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ms-table th:first-child,
+.ms-table td:first-child {
+  text-align: center;
+}
+
+.ms-table th.ms-student-name,
+.ms-table td.ms-student-name {
+  text-align: left;
+  min-width: 100px;
+}
+
+/* Rotated subject headers */
+.ms-table th.ms-subj-group {
+  padding: 2px;
+}
+
+.ms-table .ms-subj-name {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.55rem;
+  padding: 2px 0;
+  max-height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Sub-header row (IA | UT | Total) */
+.ms-table thead .ms-subheader th {
+  background: #1A1A1A;
+  color: var(--ms-cream);
+  font-size: 0.55rem;
+  font-weight: 600;
+  padding: 2px 3px;
+}
+
+/* Body cells */
+.ms-table td {
+  padding: 2px 4px;
+  border: 1px solid var(--ms-border);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.ms-table tbody tr:nth-child(even) {
+  background: var(--ms-section);
+}
+
+/* Fail tint */
+.ms-table td.ms-fail {
+  background: var(--ms-failbg) !important;
+  color: var(--ms-red);
+  font-weight: 600;
+}
+
+/* Result column */
+.ms-table td.ms-pass {
+  color: var(--ms-green);
+  font-weight: 700;
+}
+.ms-table td.ms-fail-result {
+  color: var(--ms-red);
+  font-weight: 700;
+}
+
+/* Grand total bold */
+.ms-table td.ms-grand-total {
+  font-weight: 700;
+  color: var(--ms-text);
+}
+
+/* Rank bold for passing */
+.ms-table td.ms-rank {
+  font-weight: 700;
+}
+
+/* Class average row */
+.ms-table tfoot tr {
+  background: var(--ms-dark);
+  color: var(--ms-gold);
+  font-weight: 700;
+}
+
+.ms-table tfoot td {
+  border: 1px solid var(--ms-gold);
+  padding: 3px 4px;
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ms-footer {
+  border-top: 1px solid var(--ms-border);
+  padding: 3mm 5mm;
+  flex-shrink: 0;
+}
+
+.ms-footer-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: var(--ms-text);
+  margin-bottom: 2mm;
+}
+
+.ms-footer-note {
+  font-size: 0.55rem;
+  color: var(--ms-muted);
+  text-align: center;
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCREEN STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media screen {
+  body {
+    padding: 8px;
+    background: #E8E4DA;
+  }
+
+  .marksheet-page {
+    box-shadow: 0 0 0 1px var(--ms-border);
+  }
+}
