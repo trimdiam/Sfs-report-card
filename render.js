@@ -277,7 +277,8 @@ function renderRightPanel(data, config) {
 
   const principalEl = document.getElementById('rcPrincipalRemark');
   if (principalEl) {
-    principalEl.textContent = data.remarks.finalTerm ? `"${data.remarks.finalTerm}"` : '—';
+    const ftRemark = (data.remarks && data.remarks.finalTerm) || generateRemark(data, config, 'ft');
+    principalEl.textContent = `"${ftRemark}"`;
   }
 }
 
