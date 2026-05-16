@@ -168,7 +168,9 @@
 ───────────────────────────────────────────────────────── */
 const STUDENTS = [
 
-  /* ── STUDENT 1 · Aryan Sharma · PROMOTED ─────────────── */
+  /* ── STUDENT 1 · Aryan Sharma · PROMOTED ─────────────────────────────────
+     Strong A+ student. All sub-subjects (Geography, Civics, History and
+     English I, English II) pass individually; averages are clearly high. ── */
   {
     schoolName: "St. Francis De Sales School",
     session:    "2026-2027",
@@ -185,67 +187,67 @@ const STUDENTS = [
       house:       "Xavier"
     },
     halfYearly: {
-      grandTotal: 572,
-      percentage: 81.7,
+      grandTotal: 587,
+      percentage: 83.9,
       grade:      "A+",
       rank:       1,
       totalStudents: 3,
       attendance: { present: 89, total: 96 },
       subjects: {
-        mathematics:       { ia:9,  ut:26, exam:52, total:87 },
-        science:           { ia:8,  ut:24, exam:50, total:82 },
-        computer:          { ia:9,  ut:27, exam:53, total:89 },
-        geography:         { ia:9,  ut:26, exam:53, total:88 },
-        civics:            { ia:8,  ut:25, exam:51, total:84 },
-        history:           { ia:9,  ut:26, exam:52, total:87 },
-        s_science:         { ia:0,  ut:0,  exam:0,  total:86 },
-        english_i:         { ia:8,  ut:24, exam:48, total:80 },
-        english_ii:        { ia:7,  ut:23, exam:46, total:76 },
-        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:78 },
-        h_education:       { ia:8,  ut:23, exam:47, total:78 },
-        khasi_alt_english: { ia:7,  ut:22, exam:43, total:72 }
+        mathematics:       { ia:9,  ut:27, exam:54, total:90 },
+        science:           { ia:8,  ut:25, exam:52, total:85 },
+        computer:          { ia:9,  ut:28, exam:55, total:92 },
+        geography:         { ia:9,  ut:26, exam:53, total:88 },  /* pass */
+        civics:            { ia:8,  ut:25, exam:50, total:83 },  /* pass */
+        history:           { ia:9,  ut:27, exam:54, total:90 },  /* pass */
+        s_science:         { ia:0,  ut:0,  exam:0,  total:87 },  /* avg(88+83+90)/3 = 87 */
+        english_i:         { ia:8,  ut:24, exam:49, total:81 },  /* pass */
+        english_ii:        { ia:8,  ut:23, exam:48, total:79 },  /* pass */
+        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:80 },  /* avg(81+79)/2 = 80 */
+        h_education:       { ia:8,  ut:24, exam:48, total:80 },
+        khasi_alt_english: { ia:7,  ut:22, exam:44, total:73 }
       }
     },
     finalTerm: {
-      grandTotal: 600,
-      percentage: 85.7,
+      grandTotal: 615,
+      percentage: 87.9,
       grade:      "A+",
       rank:       1,
       totalStudents: 3,
       attendance: { present: 91, total: 98 },
       subjects: {
-        mathematics:       { ia:9,  ut:27, exam:54, total:90 },
-        science:           { ia:9,  ut:25, exam:51, total:85 },
-        computer:          { ia:10, ut:28, exam:55, total:93 },
-        geography:         { ia:9,  ut:27, exam:54, total:90 },
-        civics:            { ia:9,  ut:26, exam:52, total:87 },
-        history:           { ia:9,  ut:27, exam:54, total:90 },
-        s_science:         { ia:0,  ut:0,  exam:0,  total:89 },
-        english_i:         { ia:8,  ut:25, exam:50, total:83 },
-        english_ii:        { ia:8,  ut:24, exam:48, total:80 },
-        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:82 },
-        h_education:       { ia:9,  ut:25, exam:50, total:84 },
-        khasi_alt_english: { ia:8,  ut:23, exam:46, total:77 }
+        mathematics:       { ia:10, ut:28, exam:56, total:94 },
+        science:           { ia:9,  ut:26, exam:53, total:88 },
+        computer:          { ia:10, ut:29, exam:57, total:96 },
+        geography:         { ia:9,  ut:27, exam:55, total:91 },  /* pass */
+        civics:            { ia:9,  ut:26, exam:53, total:88 },  /* pass */
+        history:           { ia:10, ut:27, exam:55, total:92 },  /* pass */
+        s_science:         { ia:0,  ut:0,  exam:0,  total:90 },  /* avg(91+88+92)/3 = 90 */
+        english_i:         { ia:9,  ut:25, exam:51, total:85 },  /* pass */
+        english_ii:        { ia:8,  ut:24, exam:50, total:82 },  /* pass */
+        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:84 },  /* avg(85+82)/2 = 84 (rounded) */
+        h_education:       { ia:9,  ut:25, exam:51, total:85 },
+        khasi_alt_english: { ia:8,  ut:23, exam:47, total:78 }
       }
     },
     consolidated: {
-      grandTotal: 1172,
-      percentage: 83.7,
+      grandTotal: 1202,
+      percentage: 85.9,
       grade:      "A+",
       result:     "PASS",
       subjects: {
-        mathematics:       { term1:87,  term2:90,  total:177 },
-        science:           { term1:82,  term2:85,  total:167 },
-        computer:          { term1:89,  term2:93,  total:182 },
-        geography:         { term1:88,  term2:90,  total:178 },
-        civics:            { term1:84,  term2:87,  total:171 },
-        history:           { term1:87,  term2:90,  total:177 },
-        s_science:         { term1:86,  term2:89,  total:175 },
-        english_i:         { term1:80,  term2:83,  total:163 },
-        english_ii:        { term1:76,  term2:80,  total:156 },
-        english_i_ii:      { term1:78,  term2:82,  total:160 },
-        h_education:       { term1:78,  term2:84,  total:162 },
-        khasi_alt_english: { term1:72,  term2:77,  total:149 }
+        mathematics:       { term1:90,  term2:94,  total:184 },
+        science:           { term1:85,  term2:88,  total:173 },
+        computer:          { term1:92,  term2:96,  total:188 },
+        geography:         { term1:88,  term2:91,  total:179 },
+        civics:            { term1:83,  term2:88,  total:171 },
+        history:           { term1:90,  term2:92,  total:182 },
+        s_science:         { term1:87,  term2:90,  total:177 },
+        english_i:         { term1:81,  term2:85,  total:166 },
+        english_ii:        { term1:79,  term2:82,  total:161 },
+        english_i_ii:      { term1:80,  term2:84,  total:164 },
+        h_education:       { term1:80,  term2:85,  total:165 },
+        khasi_alt_english: { term1:73,  term2:78,  total:151 }
       }
     },
     coScholastic: {
@@ -259,7 +261,9 @@ const STUDENTS = [
     remarks: {}
   },
 
-  /* ── STUDENT 2 · Priya Dkhar · PROMOTED ──────────────── */
+  /* ── STUDENT 2 · Priya Dkhar · PROMOTED ──────────────────────────────────
+     Average B student. Sub-subjects vary: some strong, some just over
+     pass-mark. Each component passes individually → aggregate passes. ── */
   {
     schoolName: "St. Francis De Sales School",
     session:    "2026-2027",
@@ -276,67 +280,67 @@ const STUDENTS = [
       house:       "Bosco"
     },
     halfYearly: {
-      grandTotal: 409,
-      percentage: 58.4,
-      grade:      "B+",
+      grandTotal: 401,
+      percentage: 57.3,
+      grade:      "B",
       rank:       2,
       totalStudents: 3,
       attendance: { present: 82, total: 96 },
       subjects: {
         mathematics:       { ia:6,  ut:18, exam:36, total:60 },
-        science:           { ia:5,  ut:17, exam:35, total:57 },
-        computer:          { ia:7,  ut:20, exam:38, total:65 },
-        geography:         { ia:6,  ut:19, exam:37, total:62 },
-        civics:            { ia:5,  ut:17, exam:34, total:56 },
-        history:           { ia:6,  ut:18, exam:37, total:61 },
-        s_science:         { ia:0,  ut:0,  exam:0,  total:60 },
-        english_i:         { ia:6,  ut:17, exam:34, total:57 },
-        english_ii:        { ia:5,  ut:16, exam:33, total:54 },
-        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:56 },
-        h_education:       { ia:6,  ut:18, exam:34, total:58 },
-        khasi_alt_english: { ia:5,  ut:16, exam:32, total:53 }
+        science:           { ia:5,  ut:16, exam:32, total:53 },
+        computer:          { ia:7,  ut:20, exam:39, total:66 },
+        geography:         { ia:7,  ut:20, exam:40, total:67 },  /* pass – strongest */
+        civics:            { ia:5,  ut:15, exam:30, total:50 },  /* pass – just over */
+        history:           { ia:6,  ut:18, exam:36, total:60 },  /* pass */
+        s_science:         { ia:0,  ut:0,  exam:0,  total:59 },  /* avg(67+50+60)/3 = 59 */
+        english_i:         { ia:6,  ut:18, exam:35, total:59 },  /* pass */
+        english_ii:        { ia:5,  ut:15, exam:30, total:50 },  /* pass – just over */
+        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:55 },  /* avg(59+50)/2 = 55 (rounded) */
+        h_education:       { ia:6,  ut:17, exam:34, total:57 },
+        khasi_alt_english: { ia:5,  ut:15, exam:31, total:51 }
       }
     },
     finalTerm: {
-      grandTotal: 431,
-      percentage: 61.6,
+      grandTotal: 426,
+      percentage: 60.9,
       grade:      "B+",
       rank:       2,
       totalStudents: 3,
       attendance: { present: 85, total: 98 },
       subjects: {
-        mathematics:       { ia:7,  ut:20, exam:38, total:65 },
-        science:           { ia:6,  ut:18, exam:36, total:60 },
-        computer:          { ia:7,  ut:21, exam:40, total:68 },
-        geography:         { ia:6,  ut:20, exam:38, total:64 },
-        civics:            { ia:6,  ut:18, exam:36, total:60 },
-        history:           { ia:6,  ut:19, exam:37, total:62 },
-        s_science:         { ia:0,  ut:0,  exam:0,  total:62 },
-        english_i:         { ia:6,  ut:18, exam:35, total:59 },
-        english_ii:        { ia:6,  ut:17, exam:34, total:57 },
-        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:58 },
-        h_education:       { ia:6,  ut:19, exam:36, total:61 },
-        khasi_alt_english: { ia:6,  ut:17, exam:34, total:57 }
+        mathematics:       { ia:7,  ut:20, exam:39, total:66 },
+        science:           { ia:6,  ut:17, exam:34, total:57 },
+        computer:          { ia:7,  ut:21, exam:41, total:69 },
+        geography:         { ia:7,  ut:21, exam:42, total:70 },  /* pass – strongest */
+        civics:            { ia:5,  ut:16, exam:32, total:53 },  /* pass */
+        history:           { ia:6,  ut:19, exam:38, total:63 },  /* pass */
+        s_science:         { ia:0,  ut:0,  exam:0,  total:62 },  /* avg(70+53+63)/3 = 62 */
+        english_i:         { ia:7,  ut:19, exam:37, total:63 },  /* pass */
+        english_ii:        { ia:5,  ut:16, exam:32, total:53 },  /* pass */
+        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:58 },  /* avg(63+53)/2 = 58 */
+        h_education:       { ia:6,  ut:18, exam:36, total:60 },
+        khasi_alt_english: { ia:5,  ut:16, exam:33, total:54 }
       }
     },
     consolidated: {
-      grandTotal: 840,
-      percentage: 60.0,
-      grade:      "B+",
+      grandTotal: 827,
+      percentage: 59.1,
+      grade:      "B",
       result:     "PASS",
       subjects: {
-        mathematics:       { term1:60, term2:65, total:125 },
-        science:           { term1:57, term2:60, total:117 },
-        computer:          { term1:65, term2:68, total:133 },
-        geography:         { term1:62, term2:64, total:126 },
-        civics:            { term1:56, term2:60, total:116 },
-        history:           { term1:61, term2:62, total:123 },
-        s_science:         { term1:60, term2:62, total:122 },
-        english_i:         { term1:57, term2:59, total:116 },
-        english_ii:        { term1:54, term2:57, total:111 },
-        english_i_ii:      { term1:56, term2:58, total:114 },
-        h_education:       { term1:58, term2:61, total:119 },
-        khasi_alt_english: { term1:53, term2:57, total:110 }
+        mathematics:       { term1:60, term2:66, total:126 },
+        science:           { term1:53, term2:57, total:110 },
+        computer:          { term1:66, term2:69, total:135 },
+        geography:         { term1:67, term2:70, total:137 },
+        civics:            { term1:50, term2:53, total:103 },
+        history:           { term1:60, term2:63, total:123 },
+        s_science:         { term1:59, term2:62, total:121 },
+        english_i:         { term1:59, term2:63, total:122 },
+        english_ii:        { term1:50, term2:53, total:103 },
+        english_i_ii:      { term1:55, term2:58, total:113 },
+        h_education:       { term1:57, term2:60, total:117 },
+        khasi_alt_english: { term1:51, term2:54, total:105 }
       }
     },
     coScholastic: {
@@ -350,7 +354,11 @@ const STUDENTS = [
     remarks: {}
   },
 
-  /* ── STUDENT 3 · Rohan Lyngdoh · DETAINED ────────────── */
+  /* ── STUDENT 3 · Rohan Lyngdoh · DETAINED ────────────────────────────────
+     Struggling student. Geography=36, Civics=22, History=32 — ALL three
+     below 40 (fail) → S.Science avg = (36+22+32)/3 = 30 (fail).
+     English I=27, English II=32 — both below 40 → English avg = 30 (fail).
+     No rank assigned (detained students are excluded from ranking). ── */
   {
     schoolName: "St. Francis De Sales School",
     session:    "2026-2027",
@@ -367,67 +375,67 @@ const STUDENTS = [
       house:       "Savio"
     },
     halfYearly: {
-      grandTotal: 212,
-      percentage: 30.3,
+      grandTotal: 222,
+      percentage: 31.7,
       grade:      "F",
-      rank:       3,
+      rank:       null,
       totalStudents: 3,
       attendance: { present: 61, total: 96 },
       subjects: {
-        mathematics:       { ia:3,  ut:9,  exam:20, total:32 },
-        science:           { ia:3,  ut:8,  exam:18, total:29 },
-        computer:          { ia:4,  ut:11, exam:22, total:37 },
-        geography:         { ia:3,  ut:9,  exam:20, total:32 },
-        civics:            { ia:3,  ut:8,  exam:18, total:29 },
-        history:           { ia:3,  ut:9,  exam:19, total:31 },
-        s_science:         { ia:0,  ut:0,  exam:0,  total:31 },
-        english_i:         { ia:3,  ut:8,  exam:16, total:27 },
-        english_ii:        { ia:2,  ut:7,  exam:15, total:24 },
-        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:26 },
-        h_education:       { ia:3,  ut:8,  exam:18, total:29 },
-        khasi_alt_english: { ia:3,  ut:8,  exam:17, total:28 }
+        mathematics:       { ia:3,  ut:10, exam:21, total:34 },  /* fail */
+        science:           { ia:3,  ut:9,  exam:19, total:31 },  /* fail */
+        computer:          { ia:4,  ut:12, exam:22, total:38 },  /* fail */
+        geography:         { ia:3,  ut:11, exam:22, total:36 },  /* fail */
+        civics:            { ia:2,  ut:7,  exam:13, total:22 },  /* fail – lowest */
+        history:           { ia:3,  ut:10, exam:19, total:32 },  /* fail */
+        s_science:         { ia:0,  ut:0,  exam:0,  total:30 },  /* avg(36+22+32)/3=30 → fail */
+        english_i:         { ia:2,  ut:8,  exam:17, total:27 },  /* fail */
+        english_ii:        { ia:3,  ut:9,  exam:20, total:32 },  /* fail */
+        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:30 },  /* avg(27+32)/2=30 → fail */
+        h_education:       { ia:3,  ut:9,  exam:20, total:32 },  /* fail */
+        khasi_alt_english: { ia:2,  ut:8,  exam:17, total:27 }   /* fail */
       }
     },
     finalTerm: {
-      grandTotal: 212,
-      percentage: 30.3,
+      grandTotal: 221,
+      percentage: 31.6,
       grade:      "F",
-      rank:       3,
+      rank:       null,
       totalStudents: 3,
       attendance: { present: 58, total: 98 },
       subjects: {
-        mathematics:       { ia:3,  ut:10, exam:19, total:32 },
-        science:           { ia:3,  ut:9,  exam:18, total:30 },
-        computer:          { ia:4,  ut:11, exam:23, total:38 },
-        geography:         { ia:3,  ut:10, exam:19, total:32 },
-        civics:            { ia:3,  ut:8,  exam:18, total:29 },
-        history:           { ia:3,  ut:9,  exam:19, total:31 },
-        s_science:         { ia:0,  ut:0,  exam:0,  total:31 },
-        english_i:         { ia:3,  ut:8,  exam:16, total:27 },
-        english_ii:        { ia:2,  ut:7,  exam:15, total:24 },
-        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:26 },
-        h_education:       { ia:3,  ut:8,  exam:17, total:28 },
-        khasi_alt_english: { ia:3,  ut:7,  exam:17, total:27 }
+        mathematics:       { ia:3,  ut:10, exam:20, total:33 },  /* fail */
+        science:           { ia:3,  ut:8,  exam:18, total:29 },  /* fail */
+        computer:          { ia:4,  ut:11, exam:24, total:39 },  /* fail */
+        geography:         { ia:3,  ut:11, exam:23, total:37 },  /* fail */
+        civics:            { ia:2,  ut:8,  exam:14, total:24 },  /* fail – lowest */
+        history:           { ia:3,  ut:10, exam:20, total:33 },  /* fail */
+        s_science:         { ia:0,  ut:0,  exam:0,  total:31 },  /* avg(37+24+33)/3=31 → fail */
+        english_i:         { ia:2,  ut:9,  exam:18, total:29 },  /* fail */
+        english_ii:        { ia:3,  ut:9,  exam:21, total:33 },  /* fail */
+        english_i_ii:      { ia:0,  ut:0,  exam:0,  total:31 },  /* avg(29+33)/2=31 → fail */
+        h_education:       { ia:3,  ut:9,  exam:18, total:30 },  /* fail */
+        khasi_alt_english: { ia:2,  ut:8,  exam:18, total:28 }   /* fail */
       }
     },
     consolidated: {
-      grandTotal: 424,
-      percentage: 30.3,
+      grandTotal: 443,
+      percentage: 31.6,
       grade:      "F",
       result:     "FAIL",
       subjects: {
-        mathematics:       { term1:32, term2:32, total:64  },
-        science:           { term1:29, term2:30, total:59  },
-        computer:          { term1:37, term2:38, total:75  },
-        geography:         { term1:32, term2:32, total:64  },
-        civics:            { term1:29, term2:29, total:58  },
-        history:           { term1:31, term2:31, total:62  },
-        s_science:         { term1:31, term2:31, total:62  },
-        english_i:         { term1:27, term2:27, total:54  },
-        english_ii:        { term1:24, term2:24, total:48  },
-        english_i_ii:      { term1:26, term2:26, total:52  },
-        h_education:       { term1:29, term2:28, total:57  },
-        khasi_alt_english: { term1:28, term2:27, total:55  }
+        mathematics:       { term1:34, term2:33, total:67  },
+        science:           { term1:31, term2:29, total:60  },
+        computer:          { term1:38, term2:39, total:77  },
+        geography:         { term1:36, term2:37, total:73  },
+        civics:            { term1:22, term2:24, total:46  },
+        history:           { term1:32, term2:33, total:65  },
+        s_science:         { term1:30, term2:31, total:61  },
+        english_i:         { term1:27, term2:29, total:56  },
+        english_ii:        { term1:32, term2:33, total:65  },
+        english_i_ii:      { term1:30, term2:31, total:61  },
+        h_education:       { term1:32, term2:30, total:62  },
+        khasi_alt_english: { term1:27, term2:28, total:55  }
       }
     },
     coScholastic: {
