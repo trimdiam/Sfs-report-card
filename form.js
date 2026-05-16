@@ -303,10 +303,13 @@ function calculateSubjectTotal(prefix, subj) {
     return clamp(parseFloat(inp?.value) || 0, 0, 100);
   }
   if (subj.isAggregate) {
-    let sum = 0;
+    let sum = 0, count = 0;
     for (const compKey of subj.components) {
       const comp = currentConfig.subjects.find(s => s.key === compKey);
-      if (comp) sum += calculateSubjectTotal(prefix, comp);
+      if (comp) { sum += calculateSubjectTotal(prefix, comp); count++; }
+    }
+    if (subj.aggregateMethod === 'average') {
+      return count > 0 ? Math.round(sum / count) : 0;
     }
     return sum;
   }
