@@ -393,7 +393,10 @@ body.me-body {
 }
 .me-mark-input.error {
   border-color: var(--me-fail);
-  background: #fff5f5;
+  background: #fff0f0;
+  box-shadow: 0 0 0 2px rgba(220,53,69,0.25);
+  color: #c0392b;
+  font-weight: 700;
 }
 .me-mark-input[disabled] {
   background: var(--me-surface-alt);

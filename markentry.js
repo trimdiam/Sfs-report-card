@@ -79,6 +79,12 @@ function subjectToKey(subjectLabel, classNum) {
 }
 
 // ─── AUTH ─────────────────────────────────────────────────────────────────────
+// Force LOCAL persistence so the session survives a navigation from the
+// teacher portal (same Firebase project, same origin → no re-login needed).
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err =>
+  console.warn('setPersistence failed:', err.message)
+);
+
 auth.onAuthStateChanged(async user => {
   if (user) {
     ME.user = user;
@@ -544,8 +550,13 @@ function renderGrid(students, existing) {
 function validateInput(inp) {
   const max = parseInt(inp.dataset.max);
   const val = parseFloat(inp.value);
-  if (inp.value !== '' && (isNaN(val) || val < 0 || val > max)) { inp.classList.add('error'); return false; }
+  if (inp.value !== '' && (isNaN(val) || val < 0 || val > max)) {
+    inp.classList.add('error');
+    inp.title = `Maximum allowed: ${max}`;
+    return false;
+  }
   inp.classList.remove('error');
+  inp.title = '';
   return true;
 }
 
@@ -616,6 +627,10 @@ async function flushSaves() {
 
   for (const [studentId, academic] of ME.pendingSaves) {
     const ref = db.collection('marks').doc(termKey).collection('students').doc(studentId);
+    // Pass the nested object — set({merge:true}) recursively merges nested maps,
+    // so academics.{otherSubject} is preserved. Dot-notation keys ("academics.x")
+    // would NOT work here: set() treats them as literal top-level field names
+    // with a dot in them; only update() interprets dots as field paths.
     batch.set(ref, {
       academics:     academic,
       status:        'draft',
@@ -631,6 +646,9 @@ async function flushSaves() {
   } catch (err) {
     console.error('Save failed:', err);
     hideSaveIndicator('Save failed ✗');
+    alert('Save failed: ' + (err.message || err.code || 'unknown error') +
+          '\n\nMost likely cause: Firestore security rules for /marks are not deployed.' +
+          '\nRun:  firebase deploy --only firestore:rules');
   }
 }
 
@@ -654,25 +672,44 @@ $('btnSubmit').addEventListener('click', () => {
   const { subjectKey, classNum } = ME.activeClass;
   const subj     = CONFIG[classNum]?.subjects.find(s => s.key === subjectKey);
   const isSingle = subj?.singleTotal === true;
-  let hasEmpty   = false;
+  const isSenior = CONFIG[classNum]?.markScheme === 'senior';
+  let hasEmpty    = false;
+  let hasOverLimit = false;
 
   document.querySelectorAll('#gridTbody tr').forEach(tr => {
-    if (isSingle) {
-      const inp = tr.querySelector('[data-field="singleMark"]');
-      if (!inp || inp.value === '') hasEmpty = true;
-    } else {
-      const isSenior = CONFIG[classNum]?.markScheme === 'senior';
-      (isSenior ? ['IA','TE'] : ['IA','UT','TE']).forEach(f => {
-        const inp = tr.querySelector(`[data-field="${f}"]`);
-        if (!inp || inp.value === '') hasEmpty = true;
-      });
-    }
+    const fields = isSingle ? ['singleMark'] : (isSenior ? ['IA','TE'] : ['IA','UT','TE']);
+    fields.forEach(f => {
+      const inp = tr.querySelector(`[data-field="${f}"]`);
+      if (!inp) return;
+      if (inp.value === '') { hasEmpty = true; return; }
+      const max = parseInt(inp.dataset.max);
+      const val = parseFloat(inp.value);
+      if (isNaN(val) || val < 0 || val > max) {
+        hasOverLimit = true;
+        inp.classList.add('error');
+        inp.title = `Maximum allowed: ${max}`;
+      }
+    });
   });
 
-  $('submitModalMsg').textContent = hasEmpty
-    ? 'Some students have missing marks. Please fill all entries before submitting.'
-    : 'This will notify the class teacher that marks are ready for review. You will not be able to edit marks once submitted.';
-  $('btnConfirmSubmit').style.display = hasEmpty ? 'none' : '';
+  let msg = '';
+  let canSubmit = true;
+
+  if (hasOverLimit) {
+    const scheme = isSingle ? 'Max /100'
+      : isSenior ? 'IA max: 20, TE max: 80'
+      : 'IA max: 10, UT max: 30, TE max: 60';
+    msg = `Some marks exceed the allowed maximum (${scheme}). The highlighted cells must be corrected before submitting. You can still save a draft.`;
+    canSubmit = false;
+  } else if (hasEmpty) {
+    msg = 'Some students have missing marks. Please fill all entries before submitting.';
+    canSubmit = false;
+  } else {
+    msg = 'This will notify the class teacher that marks are ready for review. You will not be able to edit marks once submitted.';
+  }
+
+  $('submitModalMsg').textContent = msg;
+  $('btnConfirmSubmit').style.display = canSubmit ? '' : 'none';
   $('submitModal').classList.remove('hidden');
 });
 
@@ -685,24 +722,34 @@ $('btnConfirmSubmit').addEventListener('click', async () => {
   collectAllRowsAndSchedule();
 
   const { classId, term, subjectLabel, subjectKey } = ME.activeClass;
-  const termKey = `${classId}_${term}`;
-  const batch   = db.batch();
-  // Use subjectKey for Firestore path; fall back to subjectLabel for legacy assignments
+  const termKey   = `${classId}_${term}`;
   const submitKey = subjectKey || subjectLabel;
+  const batch     = db.batch();
+  const stamp     = firebase.firestore.FieldValue.serverTimestamp();
 
+  // Single atomic batch: marks + submission flag together.
+  // Either everything succeeds, or nothing changes — no half-submitted state.
+  // Use nested-map syntax (NOT dot-notation keys) because set({merge:true})
+  // performs deep merge on nested maps and treats dotted keys as literal names.
   document.querySelectorAll('#gridTbody tr').forEach(tr => {
     const sid = tr.dataset.studentId;
     if (!sid) return;
     const ref = db.collection('marks').doc(termKey).collection('students').doc(sid);
-    batch.set(ref, {
-      [`submittedSubjects.${submitKey}`]: { by: ME.user.uid, at: firebase.firestore.FieldValue.serverTimestamp(), status: 'submitted' },
-      lastUpdatedBy: ME.user.uid,
-      lastUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
+
+    const payload = {
+      status:             'draft',
+      lastUpdatedBy:      ME.user.uid,
+      lastUpdatedAt:      stamp,
+      submittedSubjects:  { [submitKey]: { by: ME.user.uid, at: stamp, status: 'submitted' } }
+    };
+    const academic = ME.pendingSaves.get(sid);
+    if (academic) payload.academics = academic;
+
+    batch.set(ref, payload, { merge: true });
   });
+  ME.pendingSaves.clear();
 
   try {
-    await flushSaves();
     await batch.commit();
     hideSaveIndicator('Submitted ✓');
     document.querySelectorAll('.me-mark-input').forEach(inp => inp.disabled = true);
@@ -711,6 +758,7 @@ $('btnConfirmSubmit').addEventListener('click', async () => {
     console.error(err);
     hideSaveIndicator('Submit failed ✗');
     $('btnSubmit').disabled = false;
+    alert('Submit failed: ' + (err.message || err.code || 'unknown error'));
   }
 });
 
@@ -751,10 +799,24 @@ async function renderCTDashboard() {
     tbody.innerHTML = '<tr><td colspan="3" class="me-loading"><div class="me-spinner"></div></td></tr>';
 
     try {
-      const snap = await db.collection('marks').doc(termKey).collection('students').limit(1).get();
-      const sampleData = snap.empty ? {} : snap.docs[0].data();
-      const submitted  = sampleData.submittedSubjects || {};
-      const isLocked   = sampleData.status === 'locked';
+      // Scan a wide sample (not just 1 doc) and AGGREGATE submission state across
+      // students — otherwise a single student missing marks would mis-report a
+      // subject as "not submitted" for the whole class.
+      const snap = await db.collection('marks').doc(termKey).collection('students').limit(100).get();
+      const submitted = {};
+      let isLocked = false;
+      snap.forEach(doc => {
+        const d = doc.data();
+        if (d.status === 'locked') isLocked = true;
+        const sub = d.submittedSubjects || {};
+        for (const [k, v] of Object.entries(sub)) {
+          // Keep the "best" record: prefer submitted > anything-else
+          if (!submitted[k] || (v?.status === 'submitted' && submitted[k]?.status !== 'submitted')) {
+            submitted[k] = v;
+          }
+        }
+      });
+      const sampleData = { submittedSubjects: submitted, status: isLocked ? 'locked' : (snap.empty ? '' : 'draft') };
 
       let submittedCount = 0;
       tbody.innerHTML = '';

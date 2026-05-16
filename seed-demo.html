@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SFS Demo Seed — Class IX-A Mark Entry</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #12191B;
+      color: #D9C89E;
+      min-height: 100vh;
+      padding: 28px 16px 60px;
+    }
+    .page { max-width: 860px; margin: 0 auto; }
+
+    h1 { font-size: 1.3rem; font-weight: 700; color: #C9A84C; letter-spacing: 0.5px; }
+    .subtitle { font-size: 0.78rem; color: #7A8A70; margin-top: 4px; margin-bottom: 28px; }
+
+    /* ── SECTION ── */
+    .section {
+      background: #1C2820;
+      border: 1.5px solid #2E4030;
+      border-radius: 8px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #C9A84C; border-bottom: 1px solid #2E4030; padding-bottom: 10px; margin-bottom: 16px;
+    }
+
+    /* ── STEP CARDS ── */
+    .steps { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .step {
+      flex: 1; min-width: 180px;
+      background: #12191B;
+      border: 1.5px solid #2E4030;
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .step-num {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: #C9A84C; margin-bottom: 6px;
+    }
+    .step-text { font-size: 0.78rem; color: #A8B89A; line-height: 1.5; }
+
+    /* ── TEACHER CARDS ── */
+    .teacher-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .teacher-cards { grid-template-columns: 1fr; } }
+    .teacher-card {
+      background: #12191B;
+      border: 1.5px solid #2E4030;
+      border-radius: 6px;
+      padding: 16px;
+    }
+    .tc-id { font-size: 1.05rem; font-weight: 700; color: #C9A84C; margin-bottom: 6px; }
+    .tc-name { font-size: 0.82rem; font-weight: 600; color: #D9C89E; margin-bottom: 4px; }
+    .tc-role { font-size: 0.7rem; color: #7A8A70; margin-bottom: 10px; }
+    .tc-cred {
+      background: #0F1610;
+      border: 1px solid #1E3020;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 0.72rem; color: #A8B89A; line-height: 1.7; font-family: monospace;
+    }
+    .tc-cred b { color: #C9A84C; }
+    .btn-login {
+      display: block; width: 100%; margin-top: 10px;
+      background: #C9A84C; color: #12191B;
+      border: none; border-radius: 4px;
+      padding: 9px; font-size: 0.78rem; font-weight: 700;
+      cursor: pointer; text-align: center; text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: background 0.15s;
+    }
+    .btn-login:hover { background: #DFC06A; }
+
+    /* ── STUDENT MARK TABLE ── */
+    table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    th {
+      background: #0F1610; color: #C9A84C;
+      font-weight: 600; font-size: 0.7rem; letter-spacing: 0.5px;
+      padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #2E4030;
+    }
+    td { padding: 8px 10px; border-bottom: 1px solid #1C2820; color: #D9C89E; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(201,168,76,0.04); }
+    .mark { font-weight: 700; color: #C9A84C; }
+    .submitted-badge {
+      display: inline-block; background: #1B5E20; color: #81C784;
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px;
+      padding: 2px 7px; border-radius: 20px; text-transform: uppercase;
+    }
+    .draft-badge {
+      display: inline-block; background: #1A237E; color: #90CAF9;
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px;
+      padding: 2px 7px; border-radius: 20px; text-transform: uppercase;
+    }
+    .btn-marksheet {
+      background: transparent; border: 1.5px solid #C9A84C;
+      color: #C9A84C; border-radius: 4px;
+      padding: 5px 12px; font-size: 0.72rem; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.3px;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .btn-marksheet:hover { background: #C9A84C; color: #12191B; }
+
+    /* ── BIG SEED BUTTON ── */
+    .seed-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .btn-seed {
+      background: #C9A84C; color: #12191B;
+      border: none; border-radius: 6px;
+      padding: 12px 32px; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.5px;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .btn-seed:hover { background: #DFC06A; }
+    .btn-seed:disabled { background: #3A4A30; color: #5A6A50; cursor: not-allowed; }
+
+    /* ── LOG ── */
+    .log {
+      background: #0A100B;
+      border: 1px solid #1E3020;
+      border-radius: 4px;
+      padding: 12px 14px;
+      font-family: monospace;
+      font-size: 0.72rem;
+      color: #7A9A70;
+      max-height: 200px;
+      overflow-y: auto;
+      line-height: 1.8;
+      display: none;
+    }
+    .log.show { display: block; }
+    .log .ok  { color: #66BB6A; }
+    .log .err { color: #EF5350; }
+    .log .inf { color: #C9A84C; }
+
+    /* ── STATUS CHIP ── */
+    .status-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.72rem; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    .chip-idle    { background: #1C2820; color: #7A8A70; border: 1px solid #2E4030; }
+    .chip-running { background: #1A237E; color: #90CAF9; border: 1px solid #283593; }
+    .chip-done    { background: #1B5E20; color: #81C784; border: 1px solid #2E7D32; }
+    .chip-error   { background: #7F0000; color: #EF9A9A; border: 1px solid #B71C1C; }
+
+    .note { font-size: 0.72rem; color: #5A6A50; line-height: 1.6; }
+
+    /* ── ADMIN LOGIN FORM ── */
+    .form-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    label { font-size: 0.68rem; font-weight: 600; color: #7A8A70; text-transform: uppercase; letter-spacing: 0.5px; }
+    input[type="text"], input[type="password"] {
+      background: #12191B; border: 1.5px solid #2E4030;
+      border-radius: 4px; color: #D9C89E;
+      padding: 8px 12px; font-size: 0.8rem;
+      outline: none; min-width: 180px;
+    }
+    input:focus { border-color: #C9A84C; }
+    .btn-sm {
+      background: #2E4030; color: #A8B89A;
+      border: 1.5px solid #3E5040; border-radius: 4px;
+      padding: 8px 16px; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-sm:hover { background: #3E5040; }
+    .auth-status { font-size: 0.72rem; color: #7A8A70; }
+    .auth-status.signed-in { color: #66BB6A; }
+
+    .divider { border: none; border-top: 1px solid #2E4030; margin: 20px 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <h1>SFS Demo Seed — Class IX-A Mark Entry</h1>
+  <p class="subtitle">
+    Seeds 5 students · SFST002 (Subject Teacher, Khasi/Alt. English) · SFST004 (Class Teacher IX-A) · Half Yearly 2026–2027
+  </p>
+
+  <!-- ── STEP OVERVIEW ─────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">What This Tool Does</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Step 1</div>
+        <div class="step-text">Sign in as admin to authorise Firestore writes</div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 2</div>
+        <div class="step-text">Seeds 5 Class IX-A students into <code>/students/</code></div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 3</div>
+        <div class="step-text">Seeds teacher documents for SFST002 & SFST004 into <code>/teachers/</code></div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 4</div>
+        <div class="step-text">Seeds Khasi/Alt. English marks as <strong>submitted</strong> into <code>/marks/IX-A_HY/</code></div>
+      </div>
+    </div>
+    <p class="note">
+      After seeding, create Auth accounts for SFST002 and SFST004 via Firebase Console
+      (Project → Authentication → Add user). Then log in as each teacher to test the flow.
+      This tool only writes Firestore data — it does not create Auth accounts.
+    </p>
+  </div>
+
+  <!-- ── ADMIN AUTH ─────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">1 — Admin Sign-In</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Admin Email</label>
+        <input type="text" id="adminEmail" placeholder="admin@stfrancis.school" value="">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="adminPwd" placeholder="••••••••">
+      </div>
+      <button class="btn-sm" id="btnSignIn">Sign In</button>
+      <button class="btn-sm" id="btnSignOut" style="display:none">Sign Out</button>
+    </div>
+    <div class="auth-status" id="authStatus">Not signed in</div>
+  </div>
+
+  <!-- ── SEED BUTTON ────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">2 — Seed Firestore Data</div>
+    <div class="seed-row">
+      <button class="btn-seed" id="btnSeed" disabled>⬆ Seed Demo Data</button>
+      <span class="status-chip chip-idle" id="seedStatus">Waiting for sign-in</span>
+    </div>
+    <br>
+    <div class="log" id="seedLog"></div>
+    <br>
+    <p class="note">
+      Safe to run multiple times — overwrites demo documents using fixed IDs prefixed with <code>demo_ix_a_</code>.
+    </p>
+  </div>
+
+  <!-- ── TEACHER CREDENTIALS ───────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Teacher Accounts — Create These in Firebase Console</div>
+    <div class="teacher-cards">
+
+      <div class="teacher-card">
+        <div class="tc-id">SFST002</div>
+        <div class="tc-name">Asha Mary Nongkhlaw</div>
+        <div class="tc-role">Subject Teacher · Khasi/Alt. English · Class IX-A</div>
+        <div class="tc-cred">
+          <b>Email:</b> sfst002@stfrancis.school<br>
+          <b>Password:</b> Teacher@2026<br>
+          <b>Role:</b> teacher
+        </div>
+        <a class="btn-login" href="markentry.html" target="_blank">▶ Open as SFST002</a>
+      </div>
+
+      <div class="teacher-card">
+        <div class="tc-id">SFST004</div>
+        <div class="tc-name">Fr. David Sohtun</div>
+        <div class="tc-role">Class Teacher · Class IX-A</div>
+        <div class="tc-cred">
+          <b>Email:</b> sfst004@stfrancis.school<br>
+          <b>Password:</b> Teacher@2026<br>
+          <b>Role:</b> class_teacher
+        </div>
+        <a class="btn-login" href="markentry.html" target="_blank">▶ Open as SFST004</a>
+      </div>
+
+    </div>
+    <br>
+    <p class="note">
+      In Firebase Console → Authentication → Users → Add user.<br>
+      Then in Firestore, set the <code>/users/{uid}</code> doc: <code>{ role: "teacher", teacherId: "SFST002" }</code>
+      so the mark entry app can look up the teacher document.
+    </p>
+  </div>
+
+  <!-- ── STUDENT MARKS TABLE ───────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">3 — Class IX-A · Seeded Mark Data (Half Yearly 2026–2027)</div>
+    <p class="note" style="margin-bottom:14px">
+      Khasi/Alt. English marks are <span class="submitted-badge">Submitted</span> by SFST002.
+      All other subjects are seeded as <span class="draft-badge">Draft</span>.
+      Click <strong>View Marksheet</strong> to open the full report card preview.
+    </p>
+    <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Student Name</th>
+          <th>Khasi/Alt. Eng (IA/TE/Total)</th>
+          <th>Status</th>
+          <th>HY Total /600</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="studentTableBody">
+        <!-- filled by JS -->
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ── MARKSHEET NOTE ─────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">4 — About the Marksheet Preview</div>
+    <p class="note">
+      The <strong>View Marksheet</strong> button loads the student's full Class IX report card with all seeded marks
+      (both half-yearly and final-term placeholders). This is a pre-lock preview —
+      co-scholastic grades, attendance, remarks, and rank can be filled by the class teacher (SFST004)
+      before locking. After locking, the marksheet becomes the official record.
+    </p>
+  </div>
+
+</div><!-- end .page -->
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-init.js"></script>
+<script src="config.js"></script>
+
+<script>
+'use strict';
+
+// ── DEMO DATA ─────────────────────────────────────────────────────────────────
+// Class IX — Senior scheme: IA /20, TE /80, total /100
+// Aggregate totals = average of components (rounded)
+// render.js reads "ia" and "exam" (not "te") for the marksheet — using that format here
+
+const DEMO_STUDENTS = [
+  {
+    docId:       'demo_ix_a_1',
+    name:        'Bankitbok Khriam',
+    rollNo:      1,
+    admissionNo: 'SFS-2022-101',
+    dob:         '14-Mar-2010',
+    house:       'Xavier',
+    class:       '9',
+    section:     'A',
+    // Marks: IA (0–20), TE (0–80)
+    hy: {
+      mathematics:        { IA:17, TE:68, total:85 },
+      physics:            { IA:16, TE:65, total:81 },
+      chemistry:          { IA:15, TE:63, total:78 },
+      biology:            { IA:16, TE:64, total:80 },
+      science_pcb:        { total:80 },  // avg(81,78,80)=79.7→80
+      geography:          { IA:15, TE:62, total:77 },
+      civics:             { IA:16, TE:66, total:82 },
+      history:            { IA:17, TE:67, total:84 },
+      economics:          { IA:15, TE:61, total:76 },
+      s_science:          { total:80 },  // avg(77,82,84,76)=79.75→80
+      english_i:          { IA:16, TE:65, total:81 },
+      english_ii:         { IA:15, TE:62, total:77 },
+      english_i_ii:       { total:79 },  // avg(81,77)=79
+      h_education:        { IA:17, TE:68, total:85 },
+      khasi_alt_english:  { IA:15, TE:62, total:77 }
+    },
+    // HY grand total = sum of 6 countInTotal averages: math+pcb+ss+eng+hEdu+khasi
+    hyGrandTotal: 486,  // 85+80+80+79+85+77
+    hyPct: 81.0,
+    hyGrade: 'A+',
+    hyRank: 1,
+    coScholastic: {
+      val_edu_catechism: { halfYearly:'A+', finalTerm:'A+' },
+      handwriting:       { halfYearly:'A',  finalTerm:'A'  },
+      singing:           { halfYearly:'A',  finalTerm:'A'  },
+      pe:                { halfYearly:'A+', finalTerm:'A+' },
+      discipline:        { halfYearly:'A+', finalTerm:'A+' },
+      supw:              { halfYearly:'A',  finalTerm:'A'  }
+    },
+    finalStatus: null
+  },
+  {
+    docId:       'demo_ix_a_2',
+    name:        'Bankitlang Kharsohkleng',
+    rollNo:      2,
+    admissionNo: 'SFS-2022-102',
+    dob:         '22-Jul-2010',
+    house:       'Bosco',
+    class:       '9',
+    section:     'A',
+    hy: {
+      mathematics:        { IA:12, TE:48, total:60 },
+      physics:            { IA:11, TE:45, total:56 },
+      chemistry:          { IA:10, TE:42, total:52 },
+      biology:            { IA:11, TE:46, total:57 },
+      science_pcb:        { total:55 },  // avg(56,52,57)=55
+      geography:          { IA:11, TE:44, total:55 },
+      civics:             { IA:10, TE:42, total:52 },
+      history:            { IA:11, TE:46, total:57 },
+      economics:          { IA:10, TE:41, total:51 },
+      s_science:          { total:54 },  // avg(55,52,57,51)=53.75→54
+      english_i:          { IA:12, TE:47, total:59 },
+      english_ii:         { IA:11, TE:45, total:56 },
+      english_i_ii:       { total:58 },  // avg(59,56)=57.5→58
+      h_education:        { IA:12, TE:48, total:60 },
+      khasi_alt_english:  { IA:13, TE:55, total:68 }
+    },
+    hyGrandTotal: 355,  // 60+55+54+58+60+68
+    hyPct: 59.2,
+    hyGrade: 'B',
+    hyRank: 3,
+    coScholastic: {
+      val_edu_catechism: { halfYearly:'A',  finalTerm:'A'  },
+      handwriting:       { halfYearly:'B+', finalTerm:'A'  },
+      singing:           { halfYearly:'A+', finalTerm:'A+' },
+      pe:                { halfYearly:'A',  finalTerm:'A'  },
+      discipline:        { halfYearly:'B+', finalTerm:'A'  },
+      supw:              { halfYearly:'B+', finalTerm:'B+' }
+    },
+    finalStatus: null
+  },
+  {
+    docId:       'demo_ix_a_3',
+    name:        'Esekiel Kharbyngar',
+    rollNo:      3,
+    admissionNo: 'SFS-2022-103',
+    dob:         '09-Nov-2010',
+    house:       'Savio',
+    class:       '9',
+    section:     'A',
+    hy: {
+      mathematics:        { IA:10, TE:42, total:52 },
+      physics:            { IA:9,  TE:38, total:47 },
+      chemistry:          { IA:10, TE:40, total:50 },
+      biology:            { IA:9,  TE:38, total:47 },
+      science_pcb:        { total:48 },  // avg(47,50,47)=48
+      geography:          { IA:10, TE:40, total:50 },
+      civics:             { IA:9,  TE:37, total:46 },
+      history:            { IA:10, TE:41, total:51 },
+      economics:          { IA:9,  TE:36, total:45 },
+      s_science:          { total:48 },  // avg(50,46,51,45)=48
+      english_i:          { IA:10, TE:41, total:51 },
+      english_ii:         { IA:9,  TE:39, total:48 },
+      english_i_ii:       { total:50 },  // avg(51,48)=49.5→50
+      h_education:        { IA:10, TE:43, total:53 },
+      khasi_alt_english:  { IA:11, TE:48, total:59 }
+    },
+    hyGrandTotal: 310,  // 52+48+48+50+53+59
+    hyPct: 51.7,
+    hyGrade: 'B',
+    hyRank: 4,
+    coScholastic: {
+      val_edu_catechism: { halfYearly:'B+', finalTerm:'B+' },
+      handwriting:       { halfYearly:'B',  finalTerm:'B+' },
+      singing:           { halfYearly:'B+', finalTerm:'B+' },
+      pe:                { halfYearly:'B+', finalTerm:'B+' },
+      discipline:        { halfYearly:'B+', finalTerm:'B+' },
+      supw:              { halfYearly:'B',  finalTerm:'B'  }
+    },
+    finalStatus: null
+  },
+  {
+    docId:       'demo_ix_a_4',
+    name:        'Bansara Lyngdoh',
+    rollNo:      4,
+    admissionNo: 'SFS-2022-104',
+    dob:         '03-Feb-2010',
+    house:       'Francis',
+    class:       '9',
+    section:     'A',
+    hy: {
+      mathematics:        { IA:15, TE:60, total:75 },
+      physics:            { IA:14, TE:57, total:71 },
+      chemistry:          { IA:14, TE:58, total:72 },
+      biology:            { IA:15, TE:60, total:75 },
+      science_pcb:        { total:73 },  // avg(71,72,75)=72.7→73
+      geography:          { IA:13, TE:55, total:68 },
+      civics:             { IA:14, TE:58, total:72 },
+      history:            { IA:14, TE:57, total:71 },
+      economics:          { IA:13, TE:54, total:67 },
+      s_science:          { total:70 },  // avg(68,72,71,67)=69.5→70
+      english_i:          { IA:14, TE:57, total:71 },
+      english_ii:         { IA:13, TE:56, total:69 },
+      english_i_ii:       { total:70 },  // avg(71,69)=70
+      h_education:        { IA:15, TE:60, total:75 },
+      khasi_alt_english:  { IA:17, TE:70, total:87 }
+    },
+    hyGrandTotal: 450,  // 75+73+70+70+75+87
+    hyPct: 75.0,
+    hyGrade: 'A',
+    hyRank: 2,
+    coScholastic: {
+      val_edu_catechism: { halfYearly:'A',  finalTerm:'A'  },
+      handwriting:       { halfYearly:'A+', finalTerm:'A+' },
+      singing:           { halfYearly:'A',  finalTerm:'A+' },
+      pe:                { halfYearly:'A+', finalTerm:'A+' },
+      discipline:        { halfYearly:'A',  finalTerm:'A'  },
+      supw:              { halfYearly:'A',  finalTerm:'A'  }
+    },
+    finalStatus: null
+  },
+  {
+    docId:       'demo_ix_a_5',
+    name:        'Ailin Mawphlang',
+    rollNo:      5,
+    admissionNo: 'SFS-2022-105',
+    dob:         '17-Aug-2010',
+    house:       'Xavier',
+    class:       '9',
+    section:     'A',
+    hy: {
+      mathematics:        { IA:7,  TE:28, total:35 },  // FAIL (passmark 30)
+      physics:            { IA:7,  TE:28, total:35 },
+      chemistry:          { IA:6,  TE:25, total:31 },
+      biology:            { IA:7,  TE:28, total:35 },
+      science_pcb:        { total:34 },  // avg(35,31,35)=33.7→34 FAIL
+      geography:          { IA:7,  TE:27, total:34 },
+      civics:             { IA:6,  TE:24, total:30 },
+      history:            { IA:7,  TE:27, total:34 },
+      economics:          { IA:6,  TE:25, total:31 },
+      s_science:          { total:32 },  // avg(34,30,34,31)=32.25→32 FAIL
+      english_i:          { IA:7,  TE:28, total:35 },
+      english_ii:         { IA:6,  TE:25, total:31 },
+      english_i_ii:       { total:33 },  // avg(35,31)=33 FAIL
+      h_education:        { IA:8,  TE:30, total:38 },
+      khasi_alt_english:  { IA:9,  TE:38, total:47 }  // PASS
+    },
+    hyGrandTotal: 219,  // 35+34+32+33+38+47
+    hyPct: 36.5,
+    hyGrade: 'F',
+    hyRank: 5,
+    coScholastic: {
+      val_edu_catechism: { halfYearly:'C',  finalTerm:'C'  },
+      handwriting:       { halfYearly:'B',  finalTerm:'B'  },
+      singing:           { halfYearly:'B+', finalTerm:'B+' },
+      pe:                { halfYearly:'C',  finalTerm:'C'  },
+      discipline:        { halfYearly:'C',  finalTerm:'B'  },
+      supw:              { halfYearly:'B',  finalTerm:'B'  }
+    },
+    finalStatus: null
+  }
+];
+
+const DEMO_TEACHER_002 = {
+  docId:           'demo_teacher_sfst002',
+  teacherId:       'SFST002',
+  name:            'Asha Mary Nongkhlaw',
+  role:            'teacher',
+  subject:         'Khasi/Alt. English',
+  assignments: [
+    { classId:'IX-A', classNum:9, section:'A', subjectKey:'khasi_alt_english', subjectLabel:'Khasi/Alt. English', term:'HY' },
+    { classId:'IX-A', classNum:9, section:'A', subjectKey:'khasi_alt_english', subjectLabel:'Khasi/Alt. English', term:'FT' }
+  ]
+};
+
+const DEMO_TEACHER_004 = {
+  docId:           'demo_teacher_sfst004',
+  teacherId:       'SFST004',
+  name:            'Fr. David Sohtun',
+  role:            'class_teacher',
+  classTeacherOf:  'IX-A',
+  classTeacher:    'IX',
+  assignments:     []
+};
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+const authStatusEl = document.getElementById('authStatus');
+const btnSignIn    = document.getElementById('btnSignIn');
+const btnSignOut   = document.getElementById('btnSignOut');
+const btnSeed      = document.getElementById('btnSeed');
+const seedStatusEl = document.getElementById('seedStatus');
+const seedLogEl    = document.getElementById('seedLog');
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    authStatusEl.textContent = `Signed in as ${user.email}`;
+    authStatusEl.className   = 'auth-status signed-in';
+    btnSignIn.style.display  = 'none';
+    btnSignOut.style.display = '';
+    btnSeed.disabled         = false;
+    setStatus('Ready to seed', 'idle');
+  } else {
+    authStatusEl.textContent = 'Not signed in — please sign in above';
+    authStatusEl.className   = 'auth-status';
+    btnSignIn.style.display  = '';
+    btnSignOut.style.display = 'none';
+    btnSeed.disabled         = true;
+    setStatus('Waiting for sign-in', 'idle');
+  }
+});
+
+btnSignIn.addEventListener('click', async () => {
+  const email = document.getElementById('adminEmail').value.trim();
+  const pwd   = document.getElementById('adminPwd').value;
+  btnSignIn.disabled = true;
+  btnSignIn.textContent = 'Signing in…';
+  try {
+    await auth.signInWithEmailAndPassword(email, pwd);
+  } catch (err) {
+    authStatusEl.textContent = 'Error: ' + err.message;
+    authStatusEl.className   = 'auth-status';
+  }
+  btnSignIn.disabled = false;
+  btnSignIn.textContent = 'Sign In';
+});
+
+btnSignOut.addEventListener('click', () => auth.signOut());
+
+// ── LOG HELPERS ───────────────────────────────────────────────────────────────
+function log(msg, cls = '') {
+  seedLogEl.classList.add('show');
+  const line = document.createElement('div');
+  line.className = cls;
+  line.textContent = msg;
+  seedLogEl.appendChild(line);
+  seedLogEl.scrollTop = seedLogEl.scrollHeight;
+}
+
+function setStatus(text, type) {
+  seedStatusEl.textContent = text;
+  seedStatusEl.className   = 'status-chip chip-' + type;
+}
+
+// ── SEED ──────────────────────────────────────────────────────────────────────
+btnSeed.addEventListener('click', async () => {
+  btnSeed.disabled = true;
+  setStatus('Seeding…', 'running');
+  seedLogEl.innerHTML = '';
+  seedLogEl.classList.add('show');
+
+  try {
+    const stamp = firebase.firestore.FieldValue.serverTimestamp();
+    const submittedByRef = auth.currentUser?.uid || 'demo_sfst002';
+
+    // 1. Seed teacher documents
+    log('▸ Writing teacher documents…', 'inf');
+    const { docId: tid2, ...t2data } = DEMO_TEACHER_002;
+    const { docId: tid4, ...t4data } = DEMO_TEACHER_004;
+    await db.collection('teachers').doc(tid2).set({ ...t2data, seededAt: stamp }, { merge: true });
+    log('  ✓ SFST002 (Asha Mary Nongkhlaw) → /teachers/demo_teacher_sfst002', 'ok');
+    await db.collection('teachers').doc(tid4).set({ ...t4data, seededAt: stamp }, { merge: true });
+    log('  ✓ SFST004 (Fr. David Sohtun) → /teachers/demo_teacher_sfst004', 'ok');
+
+    // 2. Seed students
+    log('▸ Writing student documents…', 'inf');
+    for (const s of DEMO_STUDENTS) {
+      const { docId, hy, hyGrandTotal, hyPct, hyGrade, hyRank, coScholastic, finalStatus, ...studentDoc } = s;
+      await db.collection('students').doc(docId).set({
+        ...studentDoc,
+        seededAt: stamp
+      }, { merge: true });
+      log(`  ✓ ${s.name} → /students/${docId}`, 'ok');
+    }
+
+    // 3. Seed marks (HY) — all subjects as draft, khasi_alt_english as submitted
+    log('▸ Writing mark documents (HY)…', 'inf');
+    const batch = db.batch();
+
+    for (const s of DEMO_STUDENTS) {
+      const ref = db.collection('marks').doc('IX-A_HY')
+                    .collection('students').doc(s.docId);
+
+      // Build academics map
+      const academics = {};
+      for (const [key, val] of Object.entries(s.hy)) {
+        academics[key] = { ...val };
+      }
+
+      batch.set(ref, {
+        status:        'draft',
+        lastUpdatedBy: submittedByRef,
+        lastUpdatedAt: stamp,
+        academics,
+        submittedSubjects: {
+          khasi_alt_english: {
+            by:     submittedByRef,
+            at:     stamp,
+            status: 'submitted'
+          }
+        }
+      }, { merge: true });
+    }
+
+    await batch.commit();
+    log('  ✓ 5 mark documents written to /marks/IX-A_HY/students/', 'ok');
+
+    // 4. Seed FT skeleton (empty, so CT dashboard shows "not started")
+    log('▸ Writing empty FT skeletons…', 'inf');
+    const ftBatch = db.batch();
+    for (const s of DEMO_STUDENTS) {
+      const ref = db.collection('marks').doc('IX-A_FT')
+                    .collection('students').doc(s.docId);
+      ftBatch.set(ref, {
+        status:        'draft',
+        lastUpdatedBy: submittedByRef,
+        lastUpdatedAt: stamp,
+        academics:     {},
+        submittedSubjects: {}
+      }, { merge: true });
+    }
+    await ftBatch.commit();
+    log('  ✓ FT skeleton docs written', 'ok');
+
+    log('', '');
+    log('✅  All done! Firestore is seeded.', 'ok');
+    setStatus('Done ✓', 'done');
+    renderStudentTable();
+
+  } catch (err) {
+    log('❌  Error: ' + err.message, 'err');
+    setStatus('Error ✗', 'error');
+    console.error(err);
+  }
+
+  btnSeed.disabled = false;
+});
+
+// ── STUDENT TABLE ─────────────────────────────────────────────────────────────
+function renderStudentTable() {
+  const tbody = document.getElementById('studentTableBody');
+  tbody.innerHTML = '';
+  DEMO_STUDENTS.forEach((s, i) => {
+    const k = s.hy.khasi_alt_english;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td style="font-weight:600">${s.name}</td>
+      <td class="mark">IA ${k.IA} / TE ${k.TE} / <strong>${k.total}</strong></td>
+      <td><span class="submitted-badge">Submitted</span></td>
+      <td class="mark">${s.hyGrandTotal} <span style="font-weight:400;color:#7A8A70;font-size:0.7rem">(${s.hyPct}%)</span></td>
+      <td><button class="btn-marksheet" data-idx="${i}">📋 View Marksheet</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  tbody.querySelectorAll('.btn-marksheet').forEach(btn => {
+    btn.addEventListener('click', () => openMarksheet(parseInt(btn.dataset.idx)));
+  });
+}
+
+function openMarksheet(idx) {
+  const s   = DEMO_STUDENTS[idx];
+  const cfg = CONFIG[9]; // Class IX
+
+  // Build subject marks in the format render.js expects
+  // Senior scheme: uses "ia" and "exam" (not "te") keys
+  function subjForRender(key) {
+    const d = s.hy[key];
+    if (!d) return { ia: 0, exam: 0, total: 0 };
+    if (d.IA !== undefined) return { ia: d.IA, exam: d.TE, total: d.total };
+    return { ia: 0, exam: 0, total: d.total || 0 };  // aggregate
+  }
+
+  // Build final-term as identical placeholder (not submitted yet — just for render layout)
+  const hySubj = {}, ftSubj = {};
+  for (const subj of cfg.subjects) {
+    hySubj[subj.key] = subjForRender(subj.key);
+    // FT: no marks yet — show zeros so render doesn't break
+    ftSubj[subj.key] = { ia: 0, exam: 0, total: 0 };
+  }
+
+  // Build grand totals
+  const hyTotal = s.hyGrandTotal;
+  const hyPct   = s.hyPct;
+  const hyGrade = s.hyGrade;
+
+  // Consolidated: only HY is done; FT is empty — show HY totals for preview
+  const consolSubjects = {};
+  for (const subj of cfg.subjects) {
+    consolSubjects[subj.key] = {
+      term1: hySubj[subj.key]?.total || 0,
+      term2: 0,
+      total: hySubj[subj.key]?.total || 0
+    };
+  }
+
+  const studentData = {
+    schoolName:    'St. Francis De Sales Sec. School',
+    session:       '2026-2027',
+    class:         '9',
+    section:       'A',
+    classTeacher:  'Fr. David Sohtun',
+    finalStatus:   null,
+    promotedToClass: '',
+
+    student: {
+      name:        s.name,
+      rollNo:      s.rollNo,
+      admissionNo: s.admissionNo,
+      dob:         s.dob,
+      house:       s.house
+    },
+
+    halfYearly: {
+      grandTotal: hyTotal,
+      percentage: hyPct,
+      grade:      hyGrade,
+      rank:       s.hyRank,
+      totalStudents: 5,
+      attendance: { present: 78, total: 90 },
+      subjects:   hySubj
+    },
+
+    finalTerm: {
+      grandTotal: 0,
+      percentage: 0,
+      grade:      'F',
+      rank:       null,
+      totalStudents: 5,
+      attendance: { present: 0, total: 90 },
+      subjects:   ftSubj
+    },
+
+    consolidated: {
+      grandTotal:  hyTotal,
+      percentage:  hyPct,
+      grade:       hyGrade,
+      result:      hyTotal >= (600 * 0.33) ? 'PASS' : 'FAIL',
+      subjects:    consolSubjects
+    },
+
+    coScholastic: s.coScholastic,
+    remarks: {}
+  };
+
+  sessionStorage.setItem('sfds_studentData', JSON.stringify(studentData));
+  window.open('reportcard.html', '_blank');
+}
+
+// Render table on load (before seeding, shows the planned data)
+renderStudentTable();
+</script>
+</body>
+</html>

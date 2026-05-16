@@ -25,9 +25,20 @@
   </header>
 
   <!-- ═══════════════════════════════════════════
+       SCREEN 0 — LOADING (active by default while
+       auth state is restored from Firebase Auth)
+  ════════════════════════════════════════════ -->
+  <div class="me-screen active" id="screenLoading">
+    <div style="display:flex;align-items:center;justify-content:center;min-height:60vh;flex-direction:column;gap:14px">
+      <div class="me-spinner"></div>
+      <p style="color:var(--me-muted);font-size:0.9rem">Restoring your session…</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
        SCREEN 1 — LOGIN
   ════════════════════════════════════════════ -->
-  <div class="me-screen active" id="screenLogin">
+  <div class="me-screen" id="screenLogin">
     <div class="me-login-wrap">
       <div class="me-login-card">
         <h2>Teacher Sign In</h2>
